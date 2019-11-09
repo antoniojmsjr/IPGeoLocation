@@ -69,8 +69,7 @@ uses IPGeoLocation, IPGeoLocation.Types;
 
 ```delphi
   try
-    TIPGeoLocation
-    .New
+    TIPGeoLocation.New
       .IP['177.97.112.28']
       .Provider[TIPGeoLocationProviderType.IPInfo]
         .Settings

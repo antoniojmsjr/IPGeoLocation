@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{80B645CA-CDD8-43C1-BA4F-C9EC9173A13F}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="IPGeolocation.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Demo\Demo.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IPGeolocation">
+        <MSBuild Projects="IPGeolocation.dproj"/>
+    </Target>
+    <Target Name="IPGeolocation:Clean">
+        <MSBuild Projects="IPGeolocation.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IPGeolocation:Make">
+        <MSBuild Projects="IPGeolocation.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Demo">
+        <MSBuild Projects="Demo\Demo.dproj"/>
+    </Target>
+    <Target Name="Demo:Clean">
+        <MSBuild Projects="Demo\Demo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Demo:Make">
+        <MSBuild Projects="Demo\Demo.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IPGeolocation;Demo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IPGeolocation:Clean;Demo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IPGeolocation:Make;Demo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

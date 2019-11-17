@@ -26,9 +26,9 @@ unit IPGeoLocation.Providers;
 
 interface
 
-uses System.SysUtils, REST.Json.Types, REST.Json,
-REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
-IPGeoLocation.Types, IPGeoLocation.Interfaces;
+uses System.SysUtils, REST.Json.Types, REST.Json, REST.Types, REST.Client,
+Data.Bind.Components, Data.Bind.ObjectScope, IPGeoLocation.Types,
+IPGeoLocation.Interfaces, System.JSON;
 
 type
 
@@ -93,6 +93,7 @@ type
     function GetEnd: IIPGeoLocationProvider;
     function Execute: IIPGeoLocationRequest; virtual;
     function ToJSON(pResult: TEventIPGeoLocationResultString): IIPGeoLocationRequest;
+    function ParseJSON(const pJSON: string): TJSONObject;
   protected
     { protected declarations }
     [weak] //NÃO INCREMENTA O CONTADOR DE REFERÊNCIA
@@ -386,7 +387,7 @@ type
 implementation
 
 uses
-  System.JSON, System.Net.HttpClient;
+  System.Net.HttpClient;
 
 {$REGION 'TIPGeoLocationProviderCustom'}
 
@@ -582,11 +583,35 @@ begin
                                          FProvider, 'JSON Inválido');
 end;
 
+function TIPGeoLocationRequestCustom.ParseJSON(const pJSON: string): TJSONObject;
+begin
+  //http://docwiki.embarcadero.com/RADStudio/Rio/en/Compiler_Versions
+
+  try
+    {$IF CompilerVersion > 32}
+    Result := TJSONObject.ParseJSONValue(pJSON, False, True) as TJSONObject; //BUG RaiseExec
+    {$ELSE}
+    Result := TJSONObject.ParseJSONValue(pJSON, False) as TJSONObject;
+    {$IFEND}
+
+    if not Assigned(Result) then
+      raise Exception.Create('JSON Inválido');
+  except
+    on E: Exception do
+    begin
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_JSON_INVALID,
+                                           FProvider, E.Message);
+    end;
+  end;
+end;
+
 function TIPGeoLocationRequestCustom.ToJSON(pResult: TEventIPGeoLocationResultString): IIPGeoLocationRequest;
+var
+  lJSONObject: TJSONObject;
 begin
   Result := Self;
 
-  var lJSONObject := TJson.ObjectToJsonObject(Self, [TJsonOption.joDateFormatISO8601]);
+  lJSONObject := TJson.ObjectToJsonObject(Self, [TJsonOption.joDateFormatISO8601]);
 
   try
     if Assigned(pResult) then
@@ -742,9 +767,8 @@ begin
     begin
 
       try
-
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject; //TEncoding.UTF8.GetBytes=CODIFICAÇÃO INTERNA
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         lJSONObject.TryGetValue('hostname', FHostName);
         lJSONObject.TryGetValue('city', FCity);
@@ -820,19 +844,25 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[0].Name   := 'apiKey'; //case-sensitive
   FRESTRequest.Params.Items[0].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //IP
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'ip';
   FRESTRequest.Params.Items[1].Value  := FIP;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //LINGUAGEM
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[2].Name   := 'lang';
   FRESTRequest.Params.Items[2].Value  := 'en';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -844,8 +874,8 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject;
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         lJSONObject.TryGetValue('hostname', FHostName);
         lJSONObject.TryGetValue('country_code2', FCountryCode);
@@ -919,25 +949,33 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[0].Name   := 'key';
   FRESTRequest.Params.Items[0].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //IP
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'ip';
   FRESTRequest.Params.Items[1].Value  := FIP;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //CONFIGURAÇÕES EXTRAS - DOCUMENTAÇÃO
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[2].Name   := 'package';
   FRESTRequest.Params.Items[2].Value  := 'WS24';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //CONFIGURAÇÕES EXTRAS - DOCUMENTAÇÃO
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[3].Name   := 'addon';
   FRESTRequest.Params.Items[3].Value  := 'country,time_zone_info';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -948,8 +986,15 @@ begin
     begin
 
       try
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject;
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
+
+        //CONFORME A DOCUMENTAÇÃO DA API
+        if Assigned(lJSONObject.GetValue('response')) then
+        begin
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+                                               FProvider, lJSONObject.GetValue('response').Value);
+        end;
 
         lJSONObject.TryGetValue('country_code', FCountryCode);
         lJSONObject.GetValue('country').TryGetValue('alpha3_code', FCountryCode3);
@@ -1010,6 +1055,7 @@ end;
 procedure TIPGeoLocationRequestIPAPI.InternalExecute;
 var
   lJSONObject: TJSONObject;
+  lRequestSuccessAPI: Boolean;
 begin
 
   //CONFORME A DOCUMENTAÇÃO DA API
@@ -1031,24 +1077,32 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'access_key';
   FRESTRequest.Params.Items[1].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //FORMATO DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[2].Name   := 'output';
   FRESTRequest.Params.Items[2].Value  := 'json';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //LINGUAGEM DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[3].Name   := 'language';
   FRESTRequest.Params.Items[3].Value  := 'pt-br';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[4].Name   := 'hostname';
   FRESTRequest.Params.Items[4].Value  := '1';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[4].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -1060,8 +1114,17 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject;
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
+
+        //CONFORME A DOCUMENTAÇÃO DA API
+        lJSONObject.TryGetValue('success', lRequestSuccessAPI);
+        if (lRequestSuccessAPI = False) then
+        begin
+          if Assigned(lJSONObject.GetValue('error')) then
+            raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+                                                 FProvider, lJSONObject.GetValue('error').ToString);
+        end;
 
         lJSONObject.TryGetValue('hostname', FHostName);
         lJSONObject.TryGetValue('country_code', FCountryCode);
@@ -1139,24 +1202,32 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'access_key';
   FRESTRequest.Params.Items[1].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //FORMATO DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[2].Name   := 'output';
   FRESTRequest.Params.Items[2].Value  := 'json';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //LINGUAGEM DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[3].Name   := 'language';
   FRESTRequest.Params.Items[3].Value  := 'pt-br';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[4].Name   := 'hostname';
   FRESTRequest.Params.Items[4].Value  := '1';
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[4].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -1168,17 +1239,16 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject;
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         //CONFORME A DOCUMENTAÇÃO DA API
         lJSONObject.TryGetValue('success', lRequestSuccessAPI);
         if (lRequestSuccessAPI = False) then
         begin
-          lJSONObject := lJSONObject.GetValue('error') as TJSONObject;
-          if Assigned(lJSONObject) then
+          if Assigned(lJSONObject.GetValue('error')) then
             raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
-                                                 FProvider, lJSONObject.ToString);
+                                                 FProvider, lJSONObject.GetValue('error').ToString);
         end;
 
         lJSONObject.TryGetValue('hostname', FHostName);
@@ -1247,13 +1317,17 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[0].Name   := 'apiKey';
   FRESTRequest.Params.Items[0].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //IP
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'ipAddress';
   FRESTRequest.Params.Items[1].Value  := FIP;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -1265,8 +1339,8 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject; //TEncoding.UTF8.GetBytes=CODIFICAÇÃO INTERNA
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         lJSONObject.GetValue('location').TryGetValue('country', FCountryCode);
         lJSONObject.GetValue('location').TryGetValue('region', FRegion);
@@ -1346,8 +1420,8 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject; //TEncoding.UTF8.GetBytes=CODIFICAÇÃO INTERNA
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         lJSONObject.TryGetValue('alpha2', FCountryCode);
         lJSONObject.TryGetValue('alpha3', FCountryCode3);
@@ -1417,7 +1491,9 @@ begin
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[1].Name   := 'api-key';
   FRESTRequest.Params.Items[1].Value  := FIPGeoLocationProvider.Key;
+  {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
 
   //REQUISIÇÃO
   inherited;
@@ -1429,8 +1505,8 @@ begin
 
       try
 
-        lJSONObject := TJSONObject.ParseJSONValue(
-          FRESTResponse.JSONValue.ToString, False, False) as TJSONObject; //TEncoding.UTF8.GetBytes=CODIFICAÇÃO INTERNA
+        //PARSE: JSON RESPONSE
+        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
 
         lJSONObject.TryGetValue('country_code', FCountryCode);
         lJSONObject.TryGetValue('flag', FCountryFlag);

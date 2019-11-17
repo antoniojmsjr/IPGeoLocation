@@ -1,6 +1,6 @@
 {******************************************************************************}
 {                                                                              }
-{           Demo                                              }
+{           Demo                                                               }
 {                                                                              }
 {           Copyright (C) Antônio José Medeiros Schneider Júnior               }
 {                                                                              }
@@ -26,9 +26,9 @@ program Demo;
 
 uses
   Vcl.Forms,
-  Main in 'Main.pas' {frmMain},
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  Main in 'Main.pas' {frmMain};
 
 {$R *.res}
 
@@ -38,7 +38,7 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.Title := 'IPGeolocation';
+  Application.Title := 'IP Geolocalização';
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.

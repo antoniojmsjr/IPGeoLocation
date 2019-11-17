@@ -1,6 +1,6 @@
 {******************************************************************************}
 {                                                                              }
-{           IPGeoLocation.Types                                              }
+{           IPGeoLocation.Types                                                }
 {                                                                              }
 {           Copyright (C) Antônio José Medeiros Schneider Júnior               }
 {                                                                              }

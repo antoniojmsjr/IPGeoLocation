@@ -1,6 +1,6 @@
 ﻿{******************************************************************************}
 {                                                                              }
-{           Demo                                              }
+{           Demo                                                               }
 {                                                                              }
 {           Copyright (C) Antônio José Medeiros Schneider Júnior               }
 {                                                                              }
@@ -27,10 +27,10 @@ unit Main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, REST.Types, REST.Client,
-  Data.Bind.Components, Data.Bind.ObjectScope, Vcl.StdCtrls, Vcl.Grids,
-  Vcl.ValEdit, Vcl.OleCtrls, SHDocVw;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, IpPeerClient,
+  REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
+  Vcl.StdCtrls, Vcl.Grids, Vcl.ValEdit, Vcl.OleCtrls, SHDocVw;
 
 type
   TfrmMain = class(TForm)
@@ -79,7 +79,6 @@ var
   lJSONObject: TJSONObject;
   lIP: string;
 begin
-
   try
     rstClientGetIP.BaseURL := 'https://api.ipgeolocation.io/getip';
     rstClientGetIP.Accept  := 'application/json';
@@ -90,8 +89,8 @@ begin
     case rstResponseGetIP.StatusCode of
       200:
       begin
-        if (rstResponseGetIP.JSONValue.Null) or
-            not (rstResponseGetIP.JSONValue is TJSONObject) then
+        if  (rstResponseGetIP.JSONValue.Null) or
+        not (rstResponseGetIP.JSONValue is TJSONObject) then
           Exit;
 
         try
@@ -108,22 +107,22 @@ begin
         end;
       end;
     end;
-
   except
     on E: Exception do
     begin
       ShowMessage(E.Message);
     end;
   end;
-
 end;
 
 procedure TfrmMain.btnLocalizacaoClick(Sender: TObject);
+var
+  lMsgError: string;
 begin
   try
     TIPGeoLocation
     .New
-      .IP[edtIP.Text]
+      .IP[Trim(edtIP.Text)]
       .Provider[TIPGeoLocationProviderType(cbxProvedor.ItemIndex)]
         .Settings
       .Request
@@ -132,20 +131,19 @@ begin
   except
     on E: EIPGeoLocationRequestException do
     begin
-      var lMsg: string := EmptyStr;
-      lMsg := Concat(lMsg, Format('Provider: %s', [E.Provider]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
-      lMsg := Concat(lMsg, Format('URL: %s', [E.URL]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Method: %s', [E.Method]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Status Text: %s', [E.StatusText]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Message: %s', [E.Message]));
+      lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
 
-      Application.MessageBox(PWideChar(lMsg), 'ATENÇÃO', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar(E.Message), 'ATENÇÃO', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
   end;
 end;
@@ -157,25 +155,34 @@ end;
 
 procedure TfrmMain.ResultJSON(const Value: string);
 const
-  cURLMaps = 'https://www.google.com/maps/search/?api=1&query=%s,%s';
+  cURLMaps = 'https://maps.google.com/maps?q=%s,%s'; //1º: LATITUDE/2º: LONGITUDE
 var
-  lJSONObject: TJsonObject;
+  lJSONObject: TJSONObject;
   lValueJSON: string;
   lLogitude: string;
   lLatitude: string;
+  I: Integer;
 begin
-  lJSONObject := TJSONObject.ParseJSONValue(Value, False, False) as TJsonObject;
+  lJSONObject := TJSONObject.ParseJSONValue(Value, False) as TJSONObject;
 
   try
     mmoJSONGeolocalizacao.Clear;
-    mmoJSONGeolocalizacao.Lines.Add(lJSONObject.Format());
+    {$IF CompilerVersion > 32}
+    mmoJSONGeolocalizacao.Lines.Add(lJSONObject.Format);
+    {$ELSE}
+    mmoJSONGeolocalizacao.Lines.Add(TJson.Format(lJSONObject));
+    {$IFEND}
 
-    for var I := 0 to Pred(vleJSON.RowCount) do
-      if lJSONObject.TryGetValue(vleJSON.Keys[I], lValueJSON) then
+    Application.ProcessMessages;
+
+    for I := 0 to Pred(vleJSON.RowCount) do
+      if lJSONObject.TryGetValue(vleJSON.Keys[I].Trim, lValueJSON) then
         vleJSON.Cells[1, I] := lValueJSON;
   
     lJSONObject.TryGetValue('latitude', lLatitude);
     lJSONObject.TryGetValue('longitude', lLogitude);
+
+    Application.ProcessMessages;
   finally
     if Assigned(lJSONObject) then
       FreeAndNil(lJSONObject);
@@ -185,8 +192,6 @@ begin
      (lLogitude <> EmptyStr) then
   begin
     wbrMaps.Stop;
-
-    //https://developers.google.com/maps/documentation/urls/guide
     wbrMaps.Navigate(Format(cURLMaps, [lLatitude, lLogitude]));
   end;
   

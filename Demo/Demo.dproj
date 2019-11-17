@@ -73,7 +73,6 @@
         <VerInfo_Locale>1046</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2019.11.0;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
         <Custom_Styles>Light|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Light.vsf</Custom_Styles>
-        <DCC_UnitSearchPath>D:\DELPHI\IPGeoLocation\Source;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>2019</VerInfo_MinorVer>
         <VerInfo_Release>11</VerInfo_Release>

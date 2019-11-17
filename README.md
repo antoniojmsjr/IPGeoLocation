@@ -68,36 +68,36 @@ uses IPGeoLocation, IPGeoLocation.Types;
 ```
 
 ```delphi
-  var
-    lMsgError: string;
-  begin
-    try
-      TIPGeoLocation.New
-        .IP['177.97.112.28']
-        .Provider[TIPGeoLocationProviderType.IPInfo]
-          .Settings
-        .Request
-          .Execute
-          .ToJSON(ResultJSON);
-    except
-      on E: EIPGeoLocationRequestException do
-      begin
-        lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
-        lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
+var
+  lMsgError: string;
+begin
+  try
+    TIPGeoLocation.New
+      .IP['177.97.112.28']
+      .Provider[TIPGeoLocationProviderType.IPInfo]
+        .Settings
+      .Request
+        .Execute
+        .ToJSON(ResultJSON);
+  except
+    on E: EIPGeoLocationRequestException do
+    begin
+      lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
 
-        Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
-      end;
-      on E: Exception do
-      begin
-        Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
-      end;
+      Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+    end;
+    on E: Exception do
+    begin
+      Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
   end;
+end;
 ```
 ![IP Geolocalização](https://user-images.githubusercontent.com/20980984/67627133-0e618680-f82d-11e9-9594-2d71a621daa4.png)
 

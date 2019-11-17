@@ -1,5 +1,5 @@
 ![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-XE%20and%20ever-blue.svg)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20ever-blue.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap%20-brightgreen.svg)
 
@@ -68,31 +68,34 @@ uses IPGeoLocation, IPGeoLocation.Types;
 ```
 
 ```delphi
-  try
-    TIPGeoLocation.New
-      .IP['177.97.112.28']
-      .Provider[TIPGeoLocationProviderType.IPInfo]
-        .Settings
-      .Request
-        .Execute
-        .ToJSON(ResultJSON);
-  except
-    on E: EIPGeoLocationRequestException do
-    begin
-      var lMsg: string := EmptyStr;
-      lMsg := Concat(lMsg, Format('Provider: %s', [E.Provider]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
-      lMsg := Concat(lMsg, Format('URL: %s', [E.URL]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Method: %s', [E.Method]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Status Text: %s', [E.StatusText]), sLineBreak);
-      lMsg := Concat(lMsg, Format('Message: %s', [E.Message]));
+  var
+    lMsgError: string;
+  begin
+    try
+      TIPGeoLocation.New
+        .IP['177.97.112.28']
+        .Provider[TIPGeoLocationProviderType.IPInfo]
+          .Settings
+        .Request
+          .Execute
+          .ToJSON(ResultJSON);
+    except
+      on E: EIPGeoLocationRequestException do
+      begin
+        lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
+        lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
 
-      Application.MessageBox(PWideChar(lMsg), 'ATENÇÃO', MB_OK + MB_ICONERROR);
-    end;
-    on E: Exception do
-    begin
-      Application.MessageBox(PWideChar(E.Message), 'ATENÇÃO', MB_OK + MB_ICONERROR);
+        Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      end;
+      on E: Exception do
+      begin
+        Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      end;
     end;
   end;
 ```

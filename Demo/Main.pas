@@ -120,8 +120,7 @@ var
   lMsgError: string;
 begin
   try
-    TIPGeoLocation
-    .New
+    TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
       .Provider[TIPGeoLocationProviderType(cbxProvedor.ItemIndex)]
         .Settings

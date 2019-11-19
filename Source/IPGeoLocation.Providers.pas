@@ -93,7 +93,6 @@ type
     function GetEnd: IIPGeoLocationProvider;
     function Execute: IIPGeoLocationRequest; virtual;
     function ToJSON(pResult: TEventIPGeoLocationResultString): IIPGeoLocationRequest;
-    function ParseJSON(const pJSON: string): TJSONObject;
   protected
     { protected declarations }
     [weak] //NÃO INCREMENTA O CONTADOR DE REFERÊNCIA
@@ -583,28 +582,6 @@ begin
                                          FProvider, 'JSON Inválido');
 end;
 
-function TIPGeoLocationRequestCustom.ParseJSON(const pJSON: string): TJSONObject;
-begin
-  //http://docwiki.embarcadero.com/RADStudio/Rio/en/Compiler_Versions
-
-  try
-    {$IF CompilerVersion > 32}
-    Result := TJSONObject.ParseJSONValue(pJSON, False, True) as TJSONObject; //BUG RaiseExec
-    {$ELSE}
-    Result := TJSONObject.ParseJSONValue(pJSON, False) as TJSONObject;
-    {$IFEND}
-
-    if not Assigned(Result) then
-      raise Exception.Create('JSON Inválido');
-  except
-    on E: Exception do
-    begin
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_JSON_INVALID,
-                                           FProvider, E.Message);
-    end;
-  end;
-end;
-
 function TIPGeoLocationRequestCustom.ToJSON(pResult: TEventIPGeoLocationResultString): IIPGeoLocationRequest;
 var
   lJSONObject: TJSONObject;
@@ -765,33 +742,24 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
+      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('city', FCity);
+      lJSONObject.TryGetValue('region', FRegion);
+      lJSONObject.TryGetValue('country', FCountryCode);
+      lJSONObject.TryGetValue('loc', lCoordinates);
+      lJSONObject.TryGetValue('org', FISP);
+      lJSONObject.TryGetValue('postal', FZipCode);
+      lJSONObject.TryGetValue('timezone', FTimeZoneName);
 
-        lJSONObject.TryGetValue('hostname', FHostName);
-        lJSONObject.TryGetValue('city', FCity);
-        lJSONObject.TryGetValue('region', FRegion);
-        lJSONObject.TryGetValue('country', FCountryCode);
-        lJSONObject.TryGetValue('loc', lCoordinates);
-        lJSONObject.TryGetValue('org', FISP);
-        lJSONObject.TryGetValue('postal', FZipCode);
-        lJSONObject.TryGetValue('timezone', FTimeZoneName);
-
-        lCoordinatesArray := lCoordinates.Split([',']);
-        if (Length(lCoordinatesArray) >= 2) then
-        begin
-          lFormatSettings := TFormatSettings.Create('en-US');
-          TryStrToFloat(lCoordinatesArray[0], FLatitude, lFormatSettings);
-          TryStrToFloat(lCoordinatesArray[1], FLongitude, lFormatSettings);
-        end;
-
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
+      lCoordinatesArray := lCoordinates.Split([',']);
+      if (Length(lCoordinatesArray) >= 2) then
+      begin
+        lFormatSettings := TFormatSettings.Create('en-US');
+        TryStrToFloat(lCoordinatesArray[0], FLatitude, lFormatSettings);
+        TryStrToFloat(lCoordinatesArray[1], FLongitude, lFormatSettings);
       end;
-
     end;
   end;
 
@@ -871,32 +839,23 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
+      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('country_code2', FCountryCode);
+      lJSONObject.TryGetValue('country_code3', FCountryCode3);
+      lJSONObject.TryGetValue('country_name', FCountryName);
+      lJSONObject.TryGetValue('country_flag', FCountryFlag);
+      lJSONObject.TryGetValue('state_prov', FRegion);
+      lJSONObject.TryGetValue('city', FCity);
+      lJSONObject.TryGetValue('zipcode', FZipCode);
+      lJSONObject.TryGetValue('isp', FISP);
+      lJSONObject.TryGetValue('latitude', FLatitude);
+      lJSONObject.TryGetValue('longitude', FLongitude);
 
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        lJSONObject.TryGetValue('hostname', FHostName);
-        lJSONObject.TryGetValue('country_code2', FCountryCode);
-        lJSONObject.TryGetValue('country_code3', FCountryCode3);
-        lJSONObject.TryGetValue('country_name', FCountryName);
-        lJSONObject.TryGetValue('country_flag', FCountryFlag);
-        lJSONObject.TryGetValue('state_prov', FRegion);
-        lJSONObject.TryGetValue('city', FCity);
-        lJSONObject.TryGetValue('zipcode', FZipCode);
-        lJSONObject.TryGetValue('isp', FISP);
-        lJSONObject.TryGetValue('latitude', FLatitude);
-        lJSONObject.TryGetValue('longitude', FLongitude);
-
-        //TIMEZONE
-        lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
-        lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
-      end;
-
+      //TIMEZONE
+      lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
+      lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
     end;
   end;
 end;
@@ -984,37 +943,29 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        //CONFORME A DOCUMENTAÇÃO DA API
-        if Assigned(lJSONObject.GetValue('response')) then
-        begin
-          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
-                                               FProvider, lJSONObject.GetValue('response').Value);
-        end;
-
-        lJSONObject.TryGetValue('country_code', FCountryCode);
-        lJSONObject.GetValue('country').TryGetValue('alpha3_code', FCountryCode3);
-        lJSONObject.GetValue('country').TryGetValue('flag', FCountryFlag);
-        lJSONObject.GetValue('country').TryGetValue('name', FCountryName);
-        lJSONObject.TryGetValue('region_name', FRegion);
-        lJSONObject.TryGetValue('city_name', FCity);
-        lJSONObject.TryGetValue('zip_code', FZipCode);
-        lJSONObject.TryGetValue('isp', FISP);
-        lJSONObject.TryGetValue('latitude', FLatitude);
-        lJSONObject.TryGetValue('longitude', FLongitude);
-
-        //TIMEZONE
-        lJSONObject.TryGetValue('time_zone', FTimeZoneOffset);
-        lJSONObject.GetValue('time_zone_info').TryGetValue('olson', FTimeZoneName);
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
+      //CONFORME A DOCUMENTAÇÃO DA API
+      if Assigned(lJSONObject.GetValue('response')) then
+      begin
+        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+                                             FProvider, lJSONObject.GetValue('response').Value);
       end;
 
+      lJSONObject.TryGetValue('country_code', FCountryCode);
+      lJSONObject.GetValue('country').TryGetValue('alpha3_code', FCountryCode3);
+      lJSONObject.GetValue('country').TryGetValue('flag', FCountryFlag);
+      lJSONObject.GetValue('country').TryGetValue('name', FCountryName);
+      lJSONObject.TryGetValue('region_name', FRegion);
+      lJSONObject.TryGetValue('city_name', FCity);
+      lJSONObject.TryGetValue('zip_code', FZipCode);
+      lJSONObject.TryGetValue('isp', FISP);
+      lJSONObject.TryGetValue('latitude', FLatitude);
+      lJSONObject.TryGetValue('longitude', FLongitude);
+
+      //TIMEZONE
+      lJSONObject.TryGetValue('time_zone', FTimeZoneOffset);
+      lJSONObject.GetValue('time_zone_info').TryGetValue('olson', FTimeZoneName);
     end;
   end;
 end;
@@ -1111,36 +1062,27 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        //CONFORME A DOCUMENTAÇÃO DA API
-        lJSONObject.TryGetValue('success', lRequestSuccessAPI);
-        if (lRequestSuccessAPI = False) then
-        begin
-          if Assigned(lJSONObject.GetValue('error')) then
-            raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
-                                                 FProvider, lJSONObject.GetValue('error').ToString);
-        end;
-
-        lJSONObject.TryGetValue('hostname', FHostName);
-        lJSONObject.TryGetValue('country_code', FCountryCode);
-        lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
-        lJSONObject.TryGetValue('country_name', FCountryName);
-        lJSONObject.TryGetValue('region_name', FRegion);
-        lJSONObject.TryGetValue('city', FCity);
-        lJSONObject.TryGetValue('zip', FZipCode);
-        lJSONObject.TryGetValue('isp', FISP);
-        lJSONObject.TryGetValue('latitude', FLatitude);
-        lJSONObject.TryGetValue('longitude', FLongitude);
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
+      //CONFORME A DOCUMENTAÇÃO DA API
+      lJSONObject.TryGetValue('success', lRequestSuccessAPI);
+      if (lRequestSuccessAPI = False) then
+      begin
+        if Assigned(lJSONObject.GetValue('error')) then
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+                                               FProvider, lJSONObject.GetValue('error').ToString);
       end;
 
+      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('country_code', FCountryCode);
+      lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
+      lJSONObject.TryGetValue('country_name', FCountryName);
+      lJSONObject.TryGetValue('region_name', FRegion);
+      lJSONObject.TryGetValue('city', FCity);
+      lJSONObject.TryGetValue('zip', FZipCode);
+      lJSONObject.TryGetValue('isp', FISP);
+      lJSONObject.TryGetValue('latitude', FLatitude);
+      lJSONObject.TryGetValue('longitude', FLongitude);
     end;
   end;
 end;
@@ -1236,36 +1178,27 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        //CONFORME A DOCUMENTAÇÃO DA API
-        lJSONObject.TryGetValue('success', lRequestSuccessAPI);
-        if (lRequestSuccessAPI = False) then
-        begin
-          if Assigned(lJSONObject.GetValue('error')) then
-            raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
-                                                 FProvider, lJSONObject.GetValue('error').ToString);
-        end;
-
-        lJSONObject.TryGetValue('hostname', FHostName);
-        lJSONObject.TryGetValue('country_code', FCountryCode);
-        lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
-        lJSONObject.TryGetValue('country_name', FCountryName);
-        lJSONObject.TryGetValue('region_name', FRegion);
-        lJSONObject.TryGetValue('city', FCity);
-        lJSONObject.TryGetValue('zip', FZipCode);
-        lJSONObject.TryGetValue('isp', FISP);
-        lJSONObject.TryGetValue('latitude', FLatitude);
-        lJSONObject.TryGetValue('longitude', FLongitude);
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
+      //CONFORME A DOCUMENTAÇÃO DA API
+      lJSONObject.TryGetValue('success', lRequestSuccessAPI);
+      if (lRequestSuccessAPI = False) then
+      begin
+        if Assigned(lJSONObject.GetValue('error')) then
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+                                               FProvider, lJSONObject.GetValue('error').ToString);
       end;
 
+      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('country_code', FCountryCode);
+      lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
+      lJSONObject.TryGetValue('country_name', FCountryName);
+      lJSONObject.TryGetValue('region_name', FRegion);
+      lJSONObject.TryGetValue('city', FCity);
+      lJSONObject.TryGetValue('zip', FZipCode);
+      lJSONObject.TryGetValue('isp', FISP);
+      lJSONObject.TryGetValue('latitude', FLatitude);
+      lJSONObject.TryGetValue('longitude', FLongitude);
     end;
   end;
 end;
@@ -1336,25 +1269,15 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        lJSONObject.GetValue('location').TryGetValue('country', FCountryCode);
-        lJSONObject.GetValue('location').TryGetValue('region', FRegion);
-        lJSONObject.GetValue('location').TryGetValue('city', FCity);
-        lJSONObject.GetValue('location').TryGetValue('lat', FLatitude);
-        lJSONObject.GetValue('location').TryGetValue('lng', FLongitude);
-        lJSONObject.GetValue('location').TryGetValue('postalCode', FZipCode);
-        lJSONObject.GetValue('location').TryGetValue('timezone', FTimeZoneOffset);
-
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
-      end;
-
+      lJSONObject.GetValue('location').TryGetValue('country', FCountryCode);
+      lJSONObject.GetValue('location').TryGetValue('region', FRegion);
+      lJSONObject.GetValue('location').TryGetValue('city', FCity);
+      lJSONObject.GetValue('location').TryGetValue('lat', FLatitude);
+      lJSONObject.GetValue('location').TryGetValue('lng', FLongitude);
+      lJSONObject.GetValue('location').TryGetValue('postalCode', FZipCode);
+      lJSONObject.GetValue('location').TryGetValue('timezone', FTimeZoneOffset);
     end;
   end;
 end;
@@ -1417,22 +1340,12 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        lJSONObject.TryGetValue('alpha2', FCountryCode);
-        lJSONObject.TryGetValue('alpha3', FCountryCode3);
-        lJSONObject.GetValue('geo').TryGetValue('latitude', FLatitude);
-        lJSONObject.GetValue('geo').TryGetValue('longitude', FLongitude);
-
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
-      end;
-
+      lJSONObject.TryGetValue('alpha2', FCountryCode);
+      lJSONObject.TryGetValue('alpha3', FCountryCode3);
+      lJSONObject.GetValue('geo').TryGetValue('latitude', FLatitude);
+      lJSONObject.GetValue('geo').TryGetValue('longitude', FLongitude);
     end;
   end;
 end;
@@ -1502,29 +1415,19 @@ begin
   case FRESTResponse.StatusCode of
     200:
     begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      try
-
-        //PARSE: JSON RESPONSE
-        lJSONObject := ParseJSON(FRESTResponse.JSONValue.ToString);
-
-        lJSONObject.TryGetValue('country_code', FCountryCode);
-        lJSONObject.TryGetValue('flag', FCountryFlag);
-        lJSONObject.TryGetValue('country_name', FCountryName);
-        lJSONObject.TryGetValue('region', FRegion);
-        lJSONObject.TryGetValue('city', FCity);
-        lJSONObject.TryGetValue('postal', FZipCode);
-        lJSONObject.TryGetValue('latitude', FLatitude);
-        lJSONObject.TryGetValue('longitude', FLongitude);
-        lJSONObject.GetValue('asn').TryGetValue('name', FISP);
-        lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
-        lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
-
-      finally
-        if Assigned(lJSONObject) then
-          FreeAndNil(lJSONObject);
-      end;
-
+      lJSONObject.TryGetValue('country_code', FCountryCode);
+      lJSONObject.TryGetValue('flag', FCountryFlag);
+      lJSONObject.TryGetValue('country_name', FCountryName);
+      lJSONObject.TryGetValue('region', FRegion);
+      lJSONObject.TryGetValue('city', FCity);
+      lJSONObject.TryGetValue('postal', FZipCode);
+      lJSONObject.TryGetValue('latitude', FLatitude);
+      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.GetValue('asn').TryGetValue('name', FISP);
+      lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
+      lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
     end;
   end;
 end;

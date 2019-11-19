@@ -93,18 +93,11 @@ begin
         not (rstResponseGetIP.JSONValue is TJSONObject) then
           Exit;
 
-        try
-          lJSONObject :=
-            TJSONObject.ParseJSONValue(rstResponseGetIP.JSONValue.ToString) as TJSONObject;
+        lJSONObject := rstResponseGetIP.JSONValue as TJSONObject;
+        lJSONObject.TryGetValue('ip', lIP);
 
-          lJSONObject.TryGetValue('ip', lIP);
-
-          edtIP.Clear;
-          edtIP.Text := lip;
-        finally
-          if Assigned(lJSONObject) then
-            FreeAndNil(lJSONObject);
-        end;
+        edtIP.Clear;
+        edtIP.Text := lip;
       end;
     end;
   except

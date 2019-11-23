@@ -61,7 +61,7 @@ end;
 function TIPGeoLocation.GetProvider(
   const pType: TIPGeoLocationProviderType): IIPGeoLocationProvider;
 begin
-  Result := TIPGeoLocationProviderFactory.NewProvider(pType, Self, FIP);
+  Result := TIPGeoLocationProviderFactory.New(pType, Self, FIP);
 end;
 
 function TIPGeoLocation.GetIP(const Value: string): IIPGeoLocation;

@@ -36,7 +36,7 @@ type
     { protected declarations }
   public
     { public declarations }
-    class function NewProvider(const pType: TIPGeoLocationProviderType;
+    class function New(const pType: TIPGeoLocationProviderType;
       pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
   end;
 
@@ -46,7 +46,7 @@ uses IPGeoLocation.Providers, System.SysUtils;
 
 {$REGION 'TIPGeoLocationProviderFactory'}
 
-class function TIPGeoLocationProviderFactory.NewProvider(const pType: TIPGeoLocationProviderType;
+class function TIPGeoLocationProviderFactory.New(const pType: TIPGeoLocationProviderType;
       pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
 begin
   case pType of

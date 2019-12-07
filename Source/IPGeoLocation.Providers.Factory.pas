@@ -36,7 +36,7 @@ type
     { protected declarations }
   public
     { public declarations }
-    class function New(const pType: TIPGeoLocationProviderType;
+    class function New(const pType: TIPGeoLocationProviderKind;
       pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
   end;
 
@@ -46,19 +46,19 @@ uses IPGeoLocation.Providers, System.SysUtils;
 
 {$REGION 'TIPGeoLocationProviderFactory'}
 
-class function TIPGeoLocationProviderFactory.New(const pType: TIPGeoLocationProviderType;
+class function TIPGeoLocationProviderFactory.New(const pType: TIPGeoLocationProviderKind;
       pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
 begin
   case pType of
-    TIPGeoLocationProviderType.UNKNOWN:           raise Exception.Create('Provider não identificado...');
-    TIPGeoLocationProviderType.IPInfo:            Result := TIPGeoLocationProviderIPInfo.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPGeoLocation:     Result := TIPGeoLocationProviderIPGeoLocation.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IP2Location:       Result := TIPGeoLocationProviderIP2Location.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPAPI:             Result := TIPGeoLocationProviderIPAPI.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPStack:           Result := TIPGeoLocationProviderIPStack.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPIfy:             Result := TIPGeoLocationProviderIPIfy.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPGeolocationAPI:  Result := TIPGeoLocationProviderIPGeolocationAPI.Create(pIPGeoLocation, pIP);
-    TIPGeoLocationProviderType.IPData:            Result := TIPGeoLocationProviderIPData.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.UNKNOWN:           raise Exception.Create('Provider não identificado...');
+    TIPGeoLocationProviderKind.IPInfo:            Result := TIPGeoLocationProviderIPInfo.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPGeoLocation:     Result := TIPGeoLocationProviderIPGeoLocation.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IP2Location:       Result := TIPGeoLocationProviderIP2Location.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPAPI:             Result := TIPGeoLocationProviderIPAPI.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPStack:           Result := TIPGeoLocationProviderIPStack.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPIfy:             Result := TIPGeoLocationProviderIPIfy.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPGeolocationAPI:  Result := TIPGeoLocationProviderIPGeolocationAPI.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IPData:            Result := TIPGeoLocationProviderIPData.Create(pIPGeoLocation, pIP);
   else
     raise Exception.Create('Provider não implementado...');
   end;

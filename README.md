@@ -61,7 +61,7 @@ Essa tecnologia é amplamente usada em:
 | IP Data | https://ipdata.co | https://api.ipdata.co |
 
 ## Demo
-[![Download](https://img.shields.io/badge/Download-Demo.zip-orange.svg)](https://github.com/antoniojmsjr/IPGeoLocation/files/3855269/Demo.zip)
+[![Download](https://img.shields.io/badge/Download-Demo.zip-orange.svg)](https://github.com/antoniojmsjr/IPGeoLocation/files/3935476/Demo.zip)
 
 ```delphi
 uses IPGeoLocation, IPGeoLocation.Types;
@@ -73,8 +73,8 @@ var
 begin
   try
     TIPGeoLocation.New
-      .IP['177.97.112.28']
-      .Provider[TIPGeoLocationProviderType.IPInfo]
+      .IP['201.86.220.241']
+      .Provider[TIPGeoLocationProviderKind.IPInfo]
         .Settings
       .Request
         .Execute
@@ -99,7 +99,7 @@ begin
   end;
 end;
 ```
-![IP Geolocalização](https://user-images.githubusercontent.com/20980984/67627133-0e618680-f82d-11e9-9594-2d71a621daa4.png)
+![IP Geolocalização](https://user-images.githubusercontent.com/20980984/70379772-a2843a80-190f-11ea-98b7-2bde17365438.png)
 
 ## Licença
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/antoniojmsjr/IPGeoLocation/blob/master/LICENSE)

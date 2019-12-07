@@ -115,7 +115,7 @@ begin
   try
     TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
-      .Provider[TIPGeoLocationProviderType(cbxProvedor.ItemIndex)]
+      .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
         .Settings
       .Request
         .Execute
@@ -142,6 +142,7 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
+  wbrMaps.Navigate('about:blank');
   btnIPExterno.Click;
 end;
 

@@ -38,6 +38,7 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Iceberg Classico');
   Application.Title := 'IP Geolocalização';
   Application.CreateForm(TfrmMain, frmMain);
   Application.Run;

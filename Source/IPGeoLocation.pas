@@ -37,7 +37,7 @@ type
     { private declarations }
     FIP: string;
     function GetIP(const Value: string): IIPGeoLocation;
-    function GetProvider(const pType: TIPGeoLocationProviderType): IIPGeoLocationProvider;
+    function GetProvider(const pType: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
   protected
     { protected declarations }
   public
@@ -59,7 +59,7 @@ begin
 end;
 
 function TIPGeoLocation.GetProvider(
-  const pType: TIPGeoLocationProviderType): IIPGeoLocationProvider;
+  const pType: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
 begin
   Result := TIPGeoLocationProviderFactory.New(pType, Self, FIP);
 end;

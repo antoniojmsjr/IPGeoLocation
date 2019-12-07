@@ -36,10 +36,10 @@ type
   IIPGeoLocation = interface
     ['{938C5905-D014-40B3-880D-44D53E8FC5DD}']
     function GetIP(const Value: string): IIPGeoLocation;
-    function GetProvider(const Value: TIPGeoLocationProviderType): IIPGeoLocationProvider; //RECUPERA AS INFORMAÇÕES NO BANCO DE DADOS/ARQUIVO INI ETC..
+    function GetProvider(const Value: TIPGeoLocationProviderKind): IIPGeoLocationProvider; //RECUPERA AS INFORMAÇÕES NO BANCO DE DADOS/ARQUIVO INI ETC..
 
     property IP[const Value: string]: IIPGeoLocation read GetIP;
-    property Provider[const Value: TIPGeoLocationProviderType]: IIPGeoLocationProvider read GetProvider;
+    property Provider[const Value: TIPGeoLocationProviderKind]: IIPGeoLocationProvider read GetProvider;
   end;
 
   //INFORMAÇÕES DO PROVEDOR DA API
@@ -49,7 +49,7 @@ type
     function GetURI: string;
     function GetRequestAccept: string;
     function GetKey: string;
-    function GetRequestPer: TIPGeoLocationRequestLimitPer;
+    function GetRequestPer: TIPGeoLocationRequestLimitPerKind;
     function GetRequestLimit: LongInt;
     function GetAvailable: TDateTime;
     function GetTimeout: Integer;
@@ -61,7 +61,7 @@ type
     property URI: string read GetURI;
     property Key: string read GetKey;
     property RequestAccept: string read GetRequestAccept;
-    property RequestPer: TIPGeoLocationRequestLimitPer read GetRequestPer;
+    property RequestPer: TIPGeoLocationRequestLimitPerKind read GetRequestPer;
     property RequestLimit: LongInt read GetRequestLimit;
     property Available: TDateTime read GetAvailable;
     property Timeout: Integer read GetTimeout;

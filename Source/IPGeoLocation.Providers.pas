@@ -41,7 +41,7 @@ type
     function GetURI: string;
     function GetKey: string;
     function GetRequestAccept: string;
-    function GetRequestPer: TIPGeoLocationRequestLimitPer;
+    function GetRequestPer: TIPGeoLocationRequestLimitPerKind;
     function GetRequestLimit: LongInt;
     function GetAvailable: TDateTime;
     function GetTimeout: Integer;
@@ -56,7 +56,7 @@ type
     FURI: string;
     FKey: string;
     FRequestAccept: string;
-    FRequestPer: TIPGeoLocationRequestLimitPer;
+    FRequestPer: TIPGeoLocationRequestLimitPerKind;
     FRequestLimit: LongInt;
     FAvailable: TDateTime;
     FTimeout: Integer;
@@ -409,7 +409,7 @@ begin
   FURI := EmptyStr;
   FKey := EmptyStr;
   FRequestAccept := EmptyStr;
-  FRequestPer := TIPGeoLocationRequestLimitPer.iglPer_UNKNOWN;
+  FRequestPer := TIPGeoLocationRequestLimitPerKind.iglPer_UNKNOWN;
   FRequestLimit := 0;
   FTimeout := 30000;
   FAvailable := 0;
@@ -418,7 +418,7 @@ end;
 function TIPGeoLocationProviderCustom.GetRequest: IIPGeoLocationRequest;
 begin
   if not FSettingsExecuted then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_PARAMS_NOT_FOUND,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_PARAMS_NOT_FOUND,
       FID, 'Configuração não informada.');
 end;
 
@@ -452,7 +452,7 @@ begin
   Result := FRequestLimit;
 end;
 
-function TIPGeoLocationProviderCustom.GetRequestPer: TIPGeoLocationRequestLimitPer;
+function TIPGeoLocationProviderCustom.GetRequestPer: TIPGeoLocationRequestLimitPerKind;
 begin
   Result := FRequestPer;
 end;
@@ -538,7 +538,7 @@ begin
     end;
     on E: Exception do
     begin
-      raise EIPGeoLocationRequestException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_UNKNOWN,
+      raise EIPGeoLocationRequestException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
         FProvider,
         FRESTClient.BaseURL,
         FRESTResponse.StatusCode,
@@ -557,28 +557,28 @@ begin
   except
     on E: ENetHTTPClientException do
     begin
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_HTTP,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_HTTP,
                                            FProvider, E.Message);
     end;
     on E: Exception do
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_UNKNOWN,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
                                            FProvider, E.Message);
   end;
 
 
   //RESPOSTA COM CONTEÚDO?
   if FRESTResponse.Content.Trim.IsEmpty then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_NO_CONTENT,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT,
                                          FProvider, 'Conteúdo vazio');
 
   //CÓDIGO DE RETORNO DO SERVIDOR
   if (FRESTResponse.StatusCode <> 200) then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
                                          FProvider, FRESTResponse.Content);
 
   //VERIFICAÇÃO DO RETORNO DO JSON
   if not Assigned( FRESTResponse.JSONValue ) then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_JSON_INVALID,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID,
                                          FProvider, 'JSON Inválido');
 end;
 
@@ -703,7 +703,7 @@ begin
   FURI            := 'https://ipinfo.io';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_month;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_month;
   FRequestLimit   := 50000;
   FAvailable      := 0;
 end;
@@ -788,7 +788,7 @@ begin
   FURI            := 'https://api.ipgeolocation.io/ipgeo';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Month;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
   FRequestLimit   := 30000;
   FAvailable      := 0;
 end;
@@ -884,7 +884,7 @@ begin
   FURI            := 'https://api.ip2location.com/v2/';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Day;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Day;
   FRequestLimit   := 200;
   FAvailable      := 0;
 end;
@@ -948,7 +948,7 @@ begin
       //CONFORME A DOCUMENTAÇÃO DA API
       if Assigned(lJSONObject.GetValue('response')) then
       begin
-        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
                                              FProvider, lJSONObject.GetValue('response').Value);
       end;
 
@@ -994,7 +994,7 @@ begin
   FURI            := 'http://api.ipapi.com/api/';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Month;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
   FRequestLimit   := 10000;
   FAvailable      := 0;
 end;
@@ -1069,7 +1069,7 @@ begin
       if (lRequestSuccessAPI = False) then
       begin
         if Assigned(lJSONObject.GetValue('error')) then
-          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
                                                FProvider, lJSONObject.GetValue('error').ToString);
       end;
 
@@ -1111,7 +1111,7 @@ begin
   FURI            := 'http://api.ipstack.com/';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Month;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
   FRequestLimit   := 10000;
   FAvailable      := 0;
 end;
@@ -1185,7 +1185,7 @@ begin
       if (lRequestSuccessAPI = False) then
       begin
         if Assigned(lJSONObject.GetValue('error')) then
-          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPT_API,
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
                                                FProvider, lJSONObject.GetValue('error').ToString);
       end;
 
@@ -1227,7 +1227,7 @@ begin
   FURI            := 'https://geo.ipify.org/api/v1/';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Month;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
   FRequestLimit   := 10000;
   FAvailable      := 0;
 end;
@@ -1307,7 +1307,7 @@ begin
   FURI            := 'https://api.ipgeolocationapi.com/geolocate';
   FKey            := EmptyStr; //FULL FREE
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Free;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Free;
   FRequestLimit   := 0;
   FAvailable      := 0;
 end;
@@ -1374,7 +1374,7 @@ begin
   FURI            := 'https://api.ipdata.co';
   FKey            := 'TOKEN';
   FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPer.iglPer_Day;
+  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Day;
   FRequestLimit   := 1500;
   FAvailable      := 0;
 end;

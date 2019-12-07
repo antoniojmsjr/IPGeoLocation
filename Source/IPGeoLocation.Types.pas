@@ -30,23 +30,28 @@ uses
   System.SysUtils;
 
 type
-  TIPGeoLocationProviderType = (UNKNOWN=0, IPInfo=1, IPGeoLocation=2,
-                                IP2Location=3, IPApi=4, IPStack=5,
-                                IPIfy=6, IPGeolocationAPI=7,
+  TIPGeoLocationProviderKind = (UNKNOWN=0,
+                                IPInfo=1,
+                                IPGeoLocation=2,
+                                IP2Location=3,
+                                IPApi=4,
+                                IPStack=5,
+                                IPIfy=6,
+                                IPGeolocationAPI=7,
                                 IPData=8);
 
-  TIPGeoLocationRequestLimitPer = (iglPer_UNKNOWN=0,
-                                   iglPer_Day=1,
-                                   iglPer_Month=2,
-                                   iglPer_Year=3,
-                                   iglPer_Free=4);
+  TIPGeoLocationRequestLimitPerKind = (iglPer_UNKNOWN=0,
+                                       iglPer_Day=1,
+                                       iglPer_Month=2,
+                                       iglPer_Year=3,
+                                       iglPer_Free=4);
 
-  TIPGeoLocationExceptionKind = (iglEXCEPT_UNKNOWN=0,
-                                 iglEXCEPT_HTTP=1,
-                                 iglEXCEPT_PARAMS_NOT_FOUND=2,
-                                 iglEXCEPT_API=3,
-                                 iglEXCEPT_JSON_INVALID=4,
-                                 iglEXCEPT_NO_CONTENT=5);
+  TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN=0,
+                                 iglEXCEPTION_HTTP=1,
+                                 iglEXCEPTION_PARAMS_NOT_FOUND=2,
+                                 iglEXCEPTION_API=3,
+                                 iglEXCEPTION_JSON_INVALID=4,
+                                 iglEXCEPTION_NO_CONTENT=5);
 
   TEventIPGeoLocationResultString = procedure(const AValue: string) of object;
 
@@ -105,18 +110,18 @@ implementation
 function IPGeoLocationExceptionKindToString(const pValue: TIPGeoLocationExceptionKind): string;
 begin
   case pValue of
-    TIPGeoLocationExceptionKind.iglEXCEPT_UNKNOWN:
-      Result := 'EXCEPT_UNKNOWN';
-    TIPGeoLocationExceptionKind.iglEXCEPT_HTTP:
-      Result := 'EXCEPT_HTTP';
-    TIPGeoLocationExceptionKind.iglEXCEPT_PARAMS_NOT_FOUND:
-      Result := 'EXCEPT_PARAMS_NOT_FOUND';
-    TIPGeoLocationExceptionKind.iglEXCEPT_API:
-      Result := 'EXCEPT_API';
-    TIPGeoLocationExceptionKind.iglEXCEPT_JSON_INVALID:
-      Result := 'EXCEPT_JSON_INVALID';
-    TIPGeoLocationExceptionKind.iglEXCEPT_NO_CONTENT:
-      Result := 'EXCEPT_NO_CONTENT';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN:
+      Result := 'EXCEPTION_UNKNOWN';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_HTTP:
+      Result := 'EXCEPTION_HTTP';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_PARAMS_NOT_FOUND:
+      Result := 'EXCEPTION_PARAMS_NOT_FOUND';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_API:
+      Result := 'EXCEPTION_API';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID:
+      Result := 'EXCEPTION_JSON_INVALID';
+    TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT:
+      Result := 'EXCEPTION_NO_CONTENT';
   end;
 end;
 

@@ -30,28 +30,28 @@ uses
   System.SysUtils;
 
 type
-  TIPGeoLocationProviderKind = (UNKNOWN=0,
-                                IPInfo=1,
-                                IPGeoLocation=2,
-                                IP2Location=3,
-                                IPApi=4,
-                                IPStack=5,
-                                IPIfy=6,
-                                IPGeolocationAPI=7,
-                                IPData=8);
+  TIPGeoLocationProviderKind = (UNKNOWN,
+                                IPInfo,
+                                IPGeoLocation,
+                                IP2Location,
+                                IPApi,
+                                IPStack,
+                                IPIfy,
+                                IPGeolocationAPI,
+                                IPData);
 
-  TIPGeoLocationRequestLimitPerKind = (iglPer_UNKNOWN=0,
-                                       iglPer_Day=1,
-                                       iglPer_Month=2,
-                                       iglPer_Year=3,
-                                       iglPer_Free=4);
+  TIPGeoLocationRequestLimitPerKind = (iglPer_UNKNOWN,
+                                       iglPer_Day,
+                                       iglPer_Month,
+                                       iglPer_Year,
+                                       iglPer_Free);
 
-  TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN=0,
-                                 iglEXCEPTION_HTTP=1,
-                                 iglEXCEPTION_PARAMS_NOT_FOUND=2,
-                                 iglEXCEPTION_API=3,
-                                 iglEXCEPTION_JSON_INVALID=4,
-                                 iglEXCEPTION_NO_CONTENT=5);
+  TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN,
+                                 iglEXCEPTION_HTTP,
+                                 iglEXCEPTION_PARAMS_NOT_FOUND,
+                                 iglEXCEPTION_API,
+                                 iglEXCEPTION_JSON_INVALID,
+                                 iglEXCEPTION_NO_CONTENT);
 
   TEventIPGeoLocationResultString = procedure(const AValue: string) of object;
 
@@ -103,27 +103,40 @@ type
 
   {$ENDREGION}
 
-  function IPGeoLocationExceptionKindToString(const pValue: TIPGeoLocationExceptionKind): string;
+  TIPGeoLocationProviderKindHelper = record helper for TIPGeoLocationProviderKind
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+  public
+    { public declarations }
+    function AsString: string;
+    function AsInteger: Integer;
+  end;
+
+  TIPGeoLocationRequestLimitPerKindHelper = record helper for TIPGeoLocationRequestLimitPerKind
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+  public
+    { public declarations }
+    function AsString: string;
+    function AsInteger: Integer;
+  end;
+
+  TIPGeoLocationExceptionKindHelper = record helper for TIPGeoLocationExceptionKind
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+  public
+    { public declarations }
+    function AsString: string;
+    function AsInteger: Integer;
+  end;
 
 implementation
-
-function IPGeoLocationExceptionKindToString(const pValue: TIPGeoLocationExceptionKind): string;
-begin
-  case pValue of
-    TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN:
-      Result := 'EXCEPTION_UNKNOWN';
-    TIPGeoLocationExceptionKind.iglEXCEPTION_HTTP:
-      Result := 'EXCEPTION_HTTP';
-    TIPGeoLocationExceptionKind.iglEXCEPTION_PARAMS_NOT_FOUND:
-      Result := 'EXCEPTION_PARAMS_NOT_FOUND';
-    TIPGeoLocationExceptionKind.iglEXCEPTION_API:
-      Result := 'EXCEPTION_API';
-    TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID:
-      Result := 'EXCEPTION_JSON_INVALID';
-    TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT:
-      Result := 'EXCEPTION_NO_CONTENT';
-  end;
-end;
 
 {$REGION 'EIPGeoLocationException'}
 
@@ -152,6 +165,71 @@ begin
   FStatusText := pStatusText;
   FMethod := pMethod;
   Message := pMessage;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationProviderKindHelper'}
+
+function TIPGeoLocationProviderKindHelper.AsInteger: Integer;
+begin
+  Result := Ord(Self);
+end;
+
+function TIPGeoLocationProviderKindHelper.AsString: string;
+begin
+  case Self of
+    UNKNOWN:          Result := 'UNKNOWN';
+    IPInfo:           Result := 'IPInfo';
+    IPGeoLocation:    Result := 'IPGeoLocation';
+    IP2Location:      Result := 'IP2Location';
+    IPApi:            Result := 'IPApi';
+    IPStack:          Result := 'IPStack';
+    IPIfy:            Result := 'IPIfy';
+    IPGeolocationAPI: Result := 'IPGeolocationAPI';
+    IPData:           Result := 'IPData';
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationRequestLimitPerKindHelper'}
+
+function TIPGeoLocationRequestLimitPerKindHelper.AsInteger: Integer;
+begin
+  Result := Ord(Self);
+end;
+
+function TIPGeoLocationRequestLimitPerKindHelper.AsString: string;
+begin
+  case Self of
+    iglPer_UNKNOWN: Result := 'Per_UNKNOWN';
+    iglPer_Day:     Result := 'Per_Day';
+    iglPer_Month:   Result := 'Per_Month';
+    iglPer_Year:    Result := 'Per_Year';
+    iglPer_Free:    Result := 'Per_Free';
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationExceptionKindHelper'}
+
+function TIPGeoLocationExceptionKindHelper.AsInteger: Integer;
+begin
+  Result := Ord(Self);
+end;
+
+function TIPGeoLocationExceptionKindHelper.AsString: string;
+begin
+  case Self of
+    iglEXCEPTION_UNKNOWN:           Result := 'EXCEPTION_UNKNOWN';
+    iglEXCEPTION_HTTP:              Result := 'EXCEPTION_HTTP';
+    iglEXCEPTION_PARAMS_NOT_FOUND:  Result := 'EXCEPTION_PARAMS_NOT_FOUND';
+    iglEXCEPTION_API:               Result := 'EXCEPTION_API';
+    iglEXCEPTION_JSON_INVALID:      Result := 'EXCEPTION_JSON_INVALID';
+    iglEXCEPTION_NO_CONTENT:        Result := 'EXCEPTION_NO_CONTENT';
+  end;
 end;
 
 {$ENDREGION}

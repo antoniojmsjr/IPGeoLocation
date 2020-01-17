@@ -83,7 +83,7 @@ begin
     on E: EIPGeoLocationRequestException do
     begin
       lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
-      lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Kind: %s', [E.Kind.AsString]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
@@ -100,6 +100,8 @@ begin
 end;
 ```
 ![IP Geolocalização](https://user-images.githubusercontent.com/20980984/70379772-a2843a80-190f-11ea-98b7-2bde17365438.png)
+
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/vt5fpE0bzSY)
 
 ## Licença
 [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/antoniojmsjr/IPGeoLocation/blob/master/LICENSE)

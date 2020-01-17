@@ -13,6 +13,7 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   Position = poDesigned
   WindowState = wsMaximized
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

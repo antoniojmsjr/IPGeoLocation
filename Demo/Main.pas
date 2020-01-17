@@ -30,9 +30,32 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, IpPeerClient,
   REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
-  Vcl.StdCtrls, Vcl.Grids, Vcl.ValEdit, Vcl.OleCtrls, SHDocVw;
+  Vcl.StdCtrls, Vcl.Grids, Vcl.ValEdit, Vcl.OleCtrls, SHDocVw, ActiveX,
+  System.IOUtils, System.Win.Registry;
 
 type
+  //Compatibility Mode
+
+  TBrowserEmulationAdjuster = class
+  private
+    class function GetExeName(): String; inline;
+  public const
+    // Quelle: https://msdn.microsoft.com/library/ee330730.aspx, Stand: 2017-04-26
+    IE11_default   = 11000;
+    IE11_Quirks    = 11001;
+    IE10_force     = 10001;
+    IE10_default   = 10000;
+    IE9_Quirks     = 9999;
+    IE9_default    = 9000;
+    /// <summary>
+    /// Webpages containing standards-based !DOCTYPE directives are displayed in IE7
+    /// Standards mode. Default value for applications hosting the WebBrowser Control.
+    /// </summary>
+    IE7_embedded   = 7000;
+  public
+    class procedure SetBrowserEmulationDWORD(const Value: DWORD);
+  end;
+
   TfrmMain = class(TForm)
     Panel1: TPanel;
     Panel2: TPanel;
@@ -57,6 +80,7 @@ type
     procedure btnIPExternoClick(Sender: TObject);
     procedure btnLocalizacaoClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     procedure ResultJSON(const Value: string);
@@ -73,6 +97,18 @@ uses
   System.JSON, REST.Json, IPGeoLocation, IPGeoLocation.Types;
 
 {$R *.dfm}
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  wbrMaps.Silent := True;
+  TBrowserEmulationAdjuster.SetBrowserEmulationDWORD(TBrowserEmulationAdjuster.IE11_Quirks);
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  wbrMaps.Navigate('about:blank');
+  btnIPExterno.Click;
+end;
 
 procedure TfrmMain.btnIPExternoClick(Sender: TObject);
 var
@@ -124,7 +160,7 @@ begin
     on E: EIPGeoLocationRequestException do
     begin
       lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
-      lMsgError := Concat(lMsgError, Format('Kind: %s', [IPGeoLocationExceptionKindToString(E.Kind)]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('Kind: %s', [E.Kind.AsString]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('URL: %s', [E.URL]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Method: %s', [E.Method]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Status Code: %d', [E.StatusCode]), sLineBreak);
@@ -138,12 +174,6 @@ begin
       Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
   end;
-end;
-
-procedure TfrmMain.FormShow(Sender: TObject);
-begin
-  wbrMaps.Navigate('about:blank');
-  btnIPExterno.Click;
 end;
 
 procedure TfrmMain.ResultJSON(const Value: string);
@@ -183,11 +213,34 @@ begin
 
   if (lLatitude <> EmptyStr) and 
      (lLogitude <> EmptyStr) then
-  begin
-    wbrMaps.Stop;
     wbrMaps.Navigate(Format(cURLMaps, [lLatitude, lLogitude]));
+end;
+
+{ TBrowserEmulationAdjuster }
+
+class function TBrowserEmulationAdjuster.GetExeName: String;
+begin
+  Result := TPath.GetFileName(ParamStr(0));
+end;
+
+class procedure TBrowserEmulationAdjuster.SetBrowserEmulationDWORD(
+  const Value: DWORD);
+const
+  cRegistryPath = 'Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION';
+var
+  lRegistry: TRegistry;
+  lExeName: String;
+begin
+  lExeName := GetExeName();
+
+  lRegistry := TRegistry.Create(KEY_SET_VALUE);
+  try
+    lRegistry.RootKey := HKEY_CURRENT_USER;
+    Win32Check(lRegistry.OpenKey(cRegistryPath, True));
+    lRegistry.WriteInteger(lExeName, Value)
+  finally
+    lRegistry.Free();
   end;
-  
 end;
 
 end.

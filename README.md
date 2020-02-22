@@ -64,7 +64,7 @@ Essa tecnologia é amplamente usada em:
 [![Download](https://img.shields.io/badge/Download-Demo.zip-orange.svg)](https://github.com/antoniojmsjr/IPGeoLocation/files/4074834/Demo.zip)
 
 ```delphi
-uses IPGeoLocation, IPGeoLocation.Types;
+uses IPGeoLocation, IPGeoLocation.Interfaces, IPGeoLocation.Types;
 ```
 
 ```delphi
@@ -73,12 +73,12 @@ var
 begin
   try
     TIPGeoLocation.New
-      .IP['201.86.220.241']
-      .Provider[TIPGeoLocationProviderKind.IPInfo]
+      .IP[Trim(edtIP.Text)]
+      .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
         .Settings
       .Request
         .Execute
-        .ToJSON(ResultJSON);
+        .OnResponse(DoResponse);
   except
     on E: EIPGeoLocationRequestException do
     begin

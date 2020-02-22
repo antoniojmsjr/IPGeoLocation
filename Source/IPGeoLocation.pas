@@ -32,12 +32,12 @@ type
 
   {$REGION 'TIPGeoLocation'}
 
-  TIPGeoLocation = class(TInterfacedObject, IIPGeoLocation)
+  TIPGeoLocation = class sealed(TInterfacedObject, IIPGeoLocation)
   strict private
     { private declarations }
     FIP: string;
     function GetIP(const Value: string): IIPGeoLocation;
-    function GetProvider(const pType: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
+    function GetProvider(const Value: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
   protected
     { protected declarations }
   public
@@ -59,9 +59,9 @@ begin
 end;
 
 function TIPGeoLocation.GetProvider(
-  const pType: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
+  const Value: TIPGeoLocationProviderKind): IIPGeoLocationProvider;
 begin
-  Result := TIPGeoLocationProviderFactory.New(pType, Self, FIP);
+  Result := TIPGeoLocationProviderFactory.New(Value, Self, FIP);
 end;
 
 function TIPGeoLocation.GetIP(const Value: string): IIPGeoLocation;

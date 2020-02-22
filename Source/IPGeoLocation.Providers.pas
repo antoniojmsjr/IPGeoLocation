@@ -71,7 +71,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPInfo'}
 
-  TIPGeoLocationProviderIPInfo = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPInfo = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -87,7 +87,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPGeoLocation'}
 
-  TIPGeoLocationProviderIPGeoLocation = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPGeoLocation = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -103,7 +103,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIP2Location'}
 
-  TIPGeoLocationProviderIP2Location = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIP2Location = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -119,7 +119,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPAPI'}
 
-  TIPGeoLocationProviderIPAPI = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPAPI = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -135,7 +135,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPStack'}
 
-  TIPGeoLocationProviderIPStack = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPStack = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -151,7 +151,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPIfy'}
 
-  TIPGeoLocationProviderIPIfy = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPIfy = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -167,7 +167,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPGeolocationAPI'}
 
-  TIPGeoLocationProviderIPGeolocationAPI = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPGeolocationAPI = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected
@@ -183,7 +183,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderIPData'}
 
-  TIPGeoLocationProviderIPData = class(TIPGeoLocationProviderCustom)
+  TIPGeoLocationProviderIPData = class sealed(TIPGeoLocationProviderCustom)
   private
     { private declarations }
   protected

@@ -75,7 +75,7 @@ type
 
   {$REGION 'EIPGeoLocationRequestException'}
 
-  EIPGeoLocationRequestException = class(EIPGeoLocationException)
+  EIPGeoLocationRequestException = class sealed(EIPGeoLocationException)
   strict private
     { private declarations }
     FStatusCode: Integer;

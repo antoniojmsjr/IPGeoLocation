@@ -32,7 +32,7 @@ type
 
   {$REGION 'TIPGeoLocationProviderResponse'}
 
-  TIPGeoLocationProviderResponse = class(TInterfacedObject, IIPGeoLocationResponse)
+  TIPGeoLocationProviderResponse = class sealed(TInterfacedObject, IIPGeoLocationResponse)
   private
     { private declarations }
     [JsonName('ip')]

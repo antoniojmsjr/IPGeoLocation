@@ -29,15 +29,16 @@ interface
 uses IPGeoLocation.Types, IPGeoLocation.Interfaces;
 
 type
-  TIPGeoLocationProviderFactory = class
+  TIPGeoLocationProviderFactory = class sealed
   strict private
     { private declarations }
   protected
     { protected declarations }
   public
     { public declarations }
-    class function New(const pType: TIPGeoLocationProviderKind;
-      pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
+    class function New(const pProviderKind: TIPGeoLocationProviderKind;
+                       const pIPGeoLocation: IIPGeoLocation;
+                       const pIP: string): IIPGeoLocationProvider;
   end;
 
 implementation
@@ -46,10 +47,10 @@ uses IPGeoLocation.Providers, System.SysUtils;
 
 {$REGION 'TIPGeoLocationProviderFactory'}
 
-class function TIPGeoLocationProviderFactory.New(const pType: TIPGeoLocationProviderKind;
-      pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
+class function TIPGeoLocationProviderFactory.New(const pProviderKind: TIPGeoLocationProviderKind;
+  const pIPGeoLocation: IIPGeoLocation; const pIP: string): IIPGeoLocationProvider;
 begin
-  case pType of
+  case pProviderKind of
     TIPGeoLocationProviderKind.UNKNOWN:           raise Exception.Create('Provider não identificado...');
     TIPGeoLocationProviderKind.IPInfo:            Result := TIPGeoLocationProviderIPInfo.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPGeoLocation:     Result := TIPGeoLocationProviderIPGeoLocation.Create(pIPGeoLocation, pIP);

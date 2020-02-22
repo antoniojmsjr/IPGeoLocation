@@ -31,7 +31,8 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, IpPeerClient,
   REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
   Vcl.StdCtrls, Vcl.Grids, Vcl.ValEdit, Vcl.OleCtrls, SHDocVw, ActiveX,
-  System.IOUtils, System.Win.Registry;
+  System.IOUtils, System.Win.Registry, IPGeoLocation, IPGeoLocation.Types,
+  IPGeoLocation.Interfaces;
 
 type
   //Compatibility Mode
@@ -83,7 +84,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-    procedure ResultJSON(const Value: string);
+    procedure DoResponse(const pResponse: IIPGeoLocationResponse);
   public
     { Public declarations }
   end;
@@ -94,7 +95,7 @@ var
 implementation
 
 uses
-  System.JSON, REST.Json, IPGeoLocation, IPGeoLocation.Types;
+  System.JSON, REST.Json;
 
 {$R *.dfm}
 
@@ -139,7 +140,7 @@ begin
   except
     on E: Exception do
     begin
-      ShowMessage(E.Message);
+      Application.MessageBox(PWideChar('Get IP Externo: ' + E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
   end;
 end;
@@ -155,7 +156,7 @@ begin
         .Settings
       .Request
         .Execute
-        .ToJSON(ResultJSON);
+        .OnResponse(DoResponse);
   except
     on E: EIPGeoLocationRequestException do
     begin
@@ -176,7 +177,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.ResultJSON(const Value: string);
+procedure TfrmMain.DoResponse(const pResponse: IIPGeoLocationResponse);
 const
   cURLMaps = 'https://maps.google.com/maps?q=%s,%s'; //1º: LATITUDE/2º: LONGITUDE
 var
@@ -186,7 +187,7 @@ var
   lLatitude: string;
   I: Integer;
 begin
-  lJSONObject := TJSONObject.ParseJSONValue(Value, False) as TJSONObject;
+  lJSONObject := TJSONObject.ParseJSONValue(pResponse.JSON, False) as TJSONObject;
 
   try
     mmoJSONGeolocalizacao.Clear;
@@ -201,7 +202,7 @@ begin
     for I := 0 to Pred(vleJSON.RowCount) do
       if lJSONObject.TryGetValue(vleJSON.Keys[I].Trim, lValueJSON) then
         vleJSON.Cells[1, I] := lValueJSON;
-  
+
     lJSONObject.TryGetValue('latitude', lLatitude);
     lJSONObject.TryGetValue('longitude', lLogitude);
 
@@ -211,7 +212,7 @@ begin
       FreeAndNil(lJSONObject);
   end;
 
-  if (lLatitude <> EmptyStr) and 
+  if (lLatitude <> EmptyStr) and
      (lLogitude <> EmptyStr) then
     wbrMaps.Navigate(Format(cURLMaps, [lLatitude, lLogitude]));
 end;

@@ -32,9 +32,12 @@ type
 
   IIPGeoLocationProvider = interface;
   IIPGeoLocationRequest = interface;
+  IIPGeoLocationResponse = interface;
+
+  TIPGeoLocationOnResponseEvent = procedure(const AResponse: IIPGeoLocationResponse) of object;
 
   IIPGeoLocation = interface
-    ['{938C5905-D014-40B3-880D-44D53E8FC5DD}']
+    ['{C1592BED-B268-46B1-86FF-243123F7C3E2}']
     function GetIP(const Value: string): IIPGeoLocation;
     function GetProvider(const Value: TIPGeoLocationProviderKind): IIPGeoLocationProvider; //RECUPERA AS INFORMAÇÕES NO BANCO DE DADOS/ARQUIVO INI ETC..
 
@@ -42,9 +45,8 @@ type
     property Provider[const Value: TIPGeoLocationProviderKind]: IIPGeoLocationProvider read GetProvider;
   end;
 
-  //INFORMAÇÕES DO PROVEDOR DA API
   IIPGeoLocationProvider = interface
-    ['{D1A4E37B-21E2-4B52-9B24-234DCA01ABDD}']
+    ['{64985947-8AEC-4417-BB34-59FC7496EE3A}']
     function GetID: string;
     function GetURI: string;
     function GetRequestAccept: string;
@@ -70,7 +72,18 @@ type
   end;
 
   IIPGeoLocationRequest = interface
-    ['{D0D9674D-ABE9-46BD-B417-4BA685413B19}']
+    ['{88307C45-E391-4E40-AF73-2FBAB5B1F74B}']
+    function GetEnd: IIPGeoLocationProvider;
+    function GetResponse: IIPGeoLocationResponse;
+
+    function Execute: IIPGeoLocationRequest;
+    function OnResponse(const pMethod: TIPGeoLocationOnResponseEvent): IIPGeoLocationRequest;
+    property Response: IIPGeoLocationResponse read GetResponse;
+    property &End: IIPGeoLocationProvider read GetEnd;
+  end;
+
+  IIPGeoLocationResponse = interface
+    ['{2BA0D4A4-9F3C-4CFF-A485-7EB7FD0638A9}']
     function GetIP: string;
     function GetProvider: string;
     function GetHostName: string;
@@ -86,9 +99,7 @@ type
     function GetTimeZoneName: string;
     function GetTimeZoneOffset: string;
     function GetISP: string;
-    function Execute: IIPGeoLocationRequest;
-    function ToJSON(pResult: TEventIPGeoLocationResultString): IIPGeoLocationRequest;
-    function GetEnd: IIPGeoLocationProvider;
+    function GetJSON: string;
 
     property IP: string read GetIP;
     property Provider: string read GetProvider;
@@ -96,7 +107,7 @@ type
     property CountryCode: string read GetCountryCode;
     property CountryCode3: string read GetCountryCode3;
     property CountryName: string read GetCountryName;
-    property CountryFlag: string read GetCountryFlag; //URL
+    property CountryFlag: string read GetCountryFlag;
     property Region: string read GetRegion;
     property City: string read GetCity;
     property ZipCode: string read GetZipCode;
@@ -105,7 +116,7 @@ type
     property TimeZoneName: string read GetTimeZoneName;
     property TimeZoneOffset: string read GetTimeZoneOffset;
     property ISP: string read GetISP;
-    property &End: IIPGeoLocationProvider read GetEnd;
+    property JSON: string read GetJSON;
   end;
 
 implementation

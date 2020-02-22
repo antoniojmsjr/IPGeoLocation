@@ -53,8 +53,6 @@ type
                                  iglEXCEPTION_JSON_INVALID,
                                  iglEXCEPTION_NO_CONTENT);
 
-  TEventIPGeoLocationResultString = procedure(const AValue: string) of object;
-
   {$REGION 'EIPGeoLocationException'}
 
   EIPGeoLocationException = class(Exception)
@@ -103,6 +101,8 @@ type
 
   {$ENDREGION}
 
+  {$REGION 'TIPGeoLocationProviderKindHelper'}
+
   TIPGeoLocationProviderKindHelper = record helper for TIPGeoLocationProviderKind
   private
     { private declarations }
@@ -113,6 +113,10 @@ type
     function AsString: string;
     function AsInteger: Integer;
   end;
+
+  {$ENDREGION}
+
+  {$REGION 'TIPGeoLocationRequestLimitPerKindHelper'}
 
   TIPGeoLocationRequestLimitPerKindHelper = record helper for TIPGeoLocationRequestLimitPerKind
   private
@@ -125,6 +129,10 @@ type
     function AsInteger: Integer;
   end;
 
+  {$ENDREGION}
+
+  {$REGION 'TIPGeoLocationExceptionKindHelper'}
+
   TIPGeoLocationExceptionKindHelper = record helper for TIPGeoLocationExceptionKind
   private
     { private declarations }
@@ -135,6 +143,8 @@ type
     function AsString: string;
     function AsInteger: Integer;
   end;
+
+  {$ENDREGION}
 
 implementation
 

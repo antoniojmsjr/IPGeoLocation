@@ -3,13 +3,18 @@
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap%20-brightgreen.svg)
 
-![IPGeolocation](https://user-images.githubusercontent.com/20980984/86278411-b98dc100-bbae-11ea-813e-08cd5d986ca4.png)
+<p align="center">
+  <a href="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">
+    <img alt="IPGeolocation" height="150" src="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">
+  </a>
+</p>
 
 # IPGeoLocation
 
 Biblioteca de geolocalização por IP.
 
-Implementa uma interface de geolocalização por IP utilizando provedores de solução “IP-Geolocation”.
+Implementado na linguagem Delphi e utiliza interfaces fluentes para guiar no uso da biblioteca.
+A biblioteca foi desenvolvida utilizando os principais players do mercado de soluçãp de "IP-Geolocation", em anexo a lista dos provedores homologados.
 
 ## O que é a geolocalização de IP?
 

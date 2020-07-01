@@ -75,9 +75,10 @@ type
     ['{88307C45-E391-4E40-AF73-2FBAB5B1F74B}']
     function GetEnd: IIPGeoLocationProvider;
     function GetResponse: IIPGeoLocationResponse;
-
+    function ResponseLanguage(const Language: string): IIPGeoLocationRequest;
     function Execute: IIPGeoLocationRequest;
-    function OnResponse(const pMethod: TIPGeoLocationOnResponseEvent): IIPGeoLocationRequest;
+    function OnResponse(const Method: TIPGeoLocationOnResponseEvent): IIPGeoLocationRequest;
+
     property Response: IIPGeoLocationResponse read GetResponse;
     property &End: IIPGeoLocationProvider read GetEnd;
   end;

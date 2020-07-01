@@ -38,7 +38,9 @@ type
                                 IPStack,
                                 IPIfy,
                                 IPGeolocationAPI,
-                                IPData);
+                                IPData,
+                                IPWhois,
+                                IPDig);
 
   TIPGeoLocationRequestLimitPerKind = (iglPer_UNKNOWN,
                                        iglPer_Day,
@@ -198,6 +200,8 @@ begin
     IPIfy:            Result := 'IPIfy';
     IPGeolocationAPI: Result := 'IPGeolocationAPI';
     IPData:           Result := 'IPData';
+    IPWhois:          Result := 'IPWhois';
+    IPDig:            Result := 'IPDig';
   end;
 end;
 

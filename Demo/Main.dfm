@@ -90,7 +90,7 @@ object frmMain: TfrmMain
       Width = 160
       Height = 24
       Style = csDropDownList
-      DropDownCount = 10
+      DropDownCount = 11
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -107,7 +107,9 @@ object frmMain: TfrmMain
         'IP Stack'
         'IP Ify'
         'IPGeolocationAPI'
-        'IPData')
+        'IPData'
+        'IPWhois'
+        'IPDig')
     end
     object btnLocalizacao: TButton
       Left = 500

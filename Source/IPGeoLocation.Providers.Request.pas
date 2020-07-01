@@ -39,6 +39,7 @@ type
     FResponse: IIPGeoLocationResponse;
     function GetEnd: IIPGeoLocationProvider;
     function GetResponse: IIPGeoLocationResponse;
+    function ResponseLanguage(const pLanguage: string): IIPGeoLocationRequest;
     function Execute: IIPGeoLocationRequest; virtual;
     function OnResponse(const pMethod: TIPGeoLocationOnResponseEvent): IIPGeoLocationRequest;
   protected
@@ -48,6 +49,7 @@ type
     FRESTClient: TRESTClient;
     FRESTRequest: TRESTRequest;
     FRESTResponse: TRESTResponse;
+    FResponseLanguage: string;
     FIP: string;
     FProvider: string;
     FHostName: string;
@@ -66,7 +68,7 @@ type
     procedure InternalExecute; virtual;
   public
     { public declarations }
-    constructor Create(pParent: IIPGeoLocationProvider; const pIP: string);
+    constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); virtual;
     destructor Destroy; override;
   end;
 
@@ -96,6 +98,7 @@ type
     procedure InternalExecute; override;
   public
     { public declarations }
+    constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
   end;
 
   {$ENDREGION}
@@ -110,6 +113,7 @@ type
     procedure InternalExecute; override;
   public
     { public declarations }
+    constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
   end;
 
   {$ENDREGION}
@@ -184,6 +188,35 @@ type
 
   {$ENDREGION}
 
+  {$REGION 'TIPGeoLocationRequestIPWhois'}
+
+  TIPGeoLocationRequestIPWhois = class sealed(TIPGeoLocationRequestCustom)
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+    procedure InternalExecute; override;
+  public
+    { public declarations }
+    constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
+  end;
+
+  {$ENDREGION}
+
+  {$REGION 'TIPGeoLocationRequestIPDig'}
+
+  TIPGeoLocationRequestIPDig = class sealed(TIPGeoLocationRequestCustom)
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+    procedure InternalExecute; override;
+  public
+    { public declarations }
+  end;
+
+  {$ENDREGION}
+
 implementation
 
 uses
@@ -205,6 +238,7 @@ begin
   FRESTResponse := TRESTResponse.Create(nil);
   FRESTRequest.Client   := FRESTClient;
   FRESTRequest.Response := FRESTResponse;
+  FResponseLanguage := 'pt-br';
 
   FHostName       := EmptyStr;
   FCountryCode    := EmptyStr;
@@ -247,6 +281,12 @@ begin
   Result := FResponse;
 end;
 
+function TIPGeoLocationRequestCustom.ResponseLanguage(
+  const pLanguage: string): IIPGeoLocationRequest;
+begin
+  FResponseLanguage := pLanguage;
+end;
+
 function TIPGeoLocationRequestCustom.Execute: IIPGeoLocationRequest;
 begin
   Result := Self;
@@ -285,7 +325,9 @@ begin
   except
     on E: EIPGeoLocationException do
     begin
-      raise EIPGeoLocationRequestException.Create(E.Kind, E.Provider,
+      raise EIPGeoLocationRequestException.Create(
+        E.Kind,
+        E.Provider,
         FRESTClient.BaseURL,
         FRESTResponse.StatusCode,
         FRESTResponse.StatusText,
@@ -294,7 +336,8 @@ begin
     end;
     on E: Exception do
     begin
-      raise EIPGeoLocationRequestException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
+      raise EIPGeoLocationRequestException.Create(
+        TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
         FProvider,
         FRESTClient.BaseURL,
         FRESTResponse.StatusCode,
@@ -326,7 +369,7 @@ begin
   //RESPOSTA COM CONTEÚDO?
   if FRESTResponse.Content.Trim.IsEmpty then
     raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT,
-                                         FProvider, 'Conteúdo vazio');
+                                         FProvider, 'Without content.');
 
   //CÓDIGO DE RETORNO DO SERVIDOR
   if (FRESTResponse.StatusCode <> 200) then
@@ -336,7 +379,7 @@ begin
   //VERIFICAÇÃO DO RETORNO DO JSON
   if not Assigned(FRESTResponse.JSONValue) then
     raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID,
-                                         FProvider, 'JSON Inválido');
+                                         FProvider, 'JSON invalid');
 end;
 
 function TIPGeoLocationRequestCustom.OnResponse(
@@ -384,19 +427,19 @@ begin
       lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
       lJSONObject.TryGetValue('hostname', FHostName);
-      lJSONObject.TryGetValue('city', FCity);
-      lJSONObject.TryGetValue('region', FRegion);
-      lJSONObject.TryGetValue('country', FCountryCode);
-      lJSONObject.TryGetValue('loc', lCoordinates);
-      lJSONObject.TryGetValue('org', FISP);
-      lJSONObject.TryGetValue('postal', FZipCode);
+      lJSONObject.TryGetValue('city',     FCity);
+      lJSONObject.TryGetValue('region',   FRegion);
+      lJSONObject.TryGetValue('country',  FCountryCode);
+      lJSONObject.TryGetValue('loc',      lCoordinates);
+      lJSONObject.TryGetValue('org',      FISP);
+      lJSONObject.TryGetValue('postal',   FZipCode);
       lJSONObject.TryGetValue('timezone', FTimeZoneName);
 
       lCoordinatesArray := lCoordinates.Split([',']);
       if (Length(lCoordinatesArray) >= 2) then
       begin
         lFormatSettings := TFormatSettings.Create('en-US');
-        TryStrToFloat(lCoordinatesArray[0], FLatitude, lFormatSettings);
+        TryStrToFloat(lCoordinatesArray[0], FLatitude,  lFormatSettings);
         TryStrToFloat(lCoordinatesArray[1], FLongitude, lFormatSettings);
       end;
     end;
@@ -407,6 +450,13 @@ end;
 {$ENDREGION}
 
 {$REGION 'TIPGeoLocationRequestIPGeoLocation'}
+
+constructor TIPGeoLocationRequestIPGeoLocation.Create(
+  pParent: IIPGeoLocationProvider; const pIP: string);
+begin
+  inherited Create(pParent, pIP);
+  FResponseLanguage := 'en';
+end;
 
 procedure TIPGeoLocationRequestIPGeoLocation.InternalExecute;
 var
@@ -421,7 +471,7 @@ begin
 
   //API KEY
   FRESTRequest.Params.AddItem;
-  FRESTRequest.Params.Items[0].Name   := 'apiKey'; //case-sensitive
+  FRESTRequest.Params.Items[0].Name   := 'apiKey'; //CASE-SENSITIVE
   FRESTRequest.Params.Items[0].Value  := FIPGeoLocationProvider.Key;
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkQUERY;
@@ -438,7 +488,7 @@ begin
   //LINGUAGEM
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[2].Name   := 'lang';
-  FRESTRequest.Params.Items[2].Value  := 'en';
+  FRESTRequest.Params.Items[2].Value  := FResponseLanguage;
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
@@ -452,20 +502,20 @@ begin
     begin
       lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      lJSONObject.TryGetValue('hostname', FHostName);
-      lJSONObject.TryGetValue('country_code2', FCountryCode);
-      lJSONObject.TryGetValue('country_code3', FCountryCode3);
-      lJSONObject.TryGetValue('country_name', FCountryName);
-      lJSONObject.TryGetValue('country_flag', FCountryFlag);
-      lJSONObject.TryGetValue('state_prov', FRegion);
-      lJSONObject.TryGetValue('city', FCity);
-      lJSONObject.TryGetValue('zipcode', FZipCode);
-      lJSONObject.TryGetValue('isp', FISP);
-      lJSONObject.TryGetValue('latitude', FLatitude);
-      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.TryGetValue('hostname',       FHostName);
+      lJSONObject.TryGetValue('country_code2',  FCountryCode);
+      lJSONObject.TryGetValue('country_code3',  FCountryCode3);
+      lJSONObject.TryGetValue('country_name',   FCountryName);
+      lJSONObject.TryGetValue('country_flag',   FCountryFlag);
+      lJSONObject.TryGetValue('state_prov',     FRegion);
+      lJSONObject.TryGetValue('city',           FCity);
+      lJSONObject.TryGetValue('zipcode',        FZipCode);
+      lJSONObject.TryGetValue('isp',            FISP);
+      lJSONObject.TryGetValue('latitude',       FLatitude);
+      lJSONObject.TryGetValue('longitude',      FLongitude);
 
       //TIMEZONE
-      lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
+      lJSONObject.GetValue('time_zone').TryGetValue('name',   FTimeZoneName);
       lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
     end;
   end;
@@ -474,6 +524,13 @@ end;
 {$ENDREGION}
 
 {$REGION 'TIPGeoLocationRequestIP2Location'}
+
+constructor TIPGeoLocationRequestIP2Location.Create(
+  pParent: IIPGeoLocationProvider; const pIP: string);
+begin
+  inherited Create(pParent, pIP);
+  FResponseLanguage := 'en';
+end;
 
 procedure TIPGeoLocationRequestIP2Location.InternalExecute;
 var
@@ -502,20 +559,28 @@ begin
   FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
 
-  //CONFIGURAÇÕES EXTRAS - DOCUMENTAÇÃO
+  //LINGUAGEM
   FRESTRequest.Params.AddItem;
-  FRESTRequest.Params.Items[2].Name   := 'package';
-  FRESTRequest.Params.Items[2].Value  := 'WS24';
+  FRESTRequest.Params.Items[2].Name   := 'lang';
+  FRESTRequest.Params.Items[2].Value  := FResponseLanguage;
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[2].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
 
   //CONFIGURAÇÕES EXTRAS - DOCUMENTAÇÃO
   FRESTRequest.Params.AddItem;
-  FRESTRequest.Params.Items[3].Name   := 'addon';
-  FRESTRequest.Params.Items[3].Value  := 'country,time_zone_info';
+  FRESTRequest.Params.Items[3].Name   := 'package';
+  FRESTRequest.Params.Items[3].Value  := 'WS24';
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
+
+  //CONFIGURAÇÕES EXTRAS - DOCUMENTAÇÃO
+  FRESTRequest.Params.AddItem;
+  FRESTRequest.Params.Items[4].Name   := 'addon';
+  FRESTRequest.Params.Items[4].Value  := 'country,time_zone_info';
+  {$IF CompilerVersion > 32}
+  FRESTRequest.Params.Items[4].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
 
   //REQUISIÇÃO
@@ -531,19 +596,20 @@ begin
       if Assigned(lJSONObject.GetValue('response')) then
       begin
         raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
-                                             FProvider, lJSONObject.GetValue('response').Value);
+                                             FProvider,
+                                             lJSONObject.GetValue('response').Value);
       end;
 
       lJSONObject.TryGetValue('country_code', FCountryCode);
-      lJSONObject.GetValue('country').TryGetValue('alpha3_code', FCountryCode3);
-      lJSONObject.GetValue('country').TryGetValue('flag', FCountryFlag);
-      lJSONObject.GetValue('country').TryGetValue('name', FCountryName);
-      lJSONObject.TryGetValue('region_name', FRegion);
-      lJSONObject.TryGetValue('city_name', FCity);
-      lJSONObject.TryGetValue('zip_code', FZipCode);
-      lJSONObject.TryGetValue('isp', FISP);
-      lJSONObject.TryGetValue('latitude', FLatitude);
-      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.GetValue('country').TryGetValue('alpha3_code',  FCountryCode3);
+      lJSONObject.GetValue('country').TryGetValue('flag',         FCountryFlag);
+      lJSONObject.GetValue('country').TryGetValue('name',         FCountryName);
+      lJSONObject.TryGetValue('region_name',  FRegion);
+      lJSONObject.TryGetValue('city_name',    FCity);
+      lJSONObject.TryGetValue('zip_code',     FZipCode);
+      lJSONObject.TryGetValue('isp',          FISP);
+      lJSONObject.TryGetValue('latitude',     FLatitude);
+      lJSONObject.TryGetValue('longitude',    FLongitude);
 
       //TIMEZONE
       lJSONObject.TryGetValue('time_zone', FTimeZoneOffset);
@@ -596,7 +662,7 @@ begin
   //LINGUAGEM DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[3].Name   := 'language';
-  FRESTRequest.Params.Items[3].Value  := 'pt-br';
+  FRESTRequest.Params.Items[3].Value  := FResponseLanguage;
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
@@ -623,19 +689,20 @@ begin
       begin
         if Assigned(lJSONObject.GetValue('error')) then
           raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
-                                               FProvider, lJSONObject.GetValue('error').ToString);
+                                               FProvider,
+                                               lJSONObject.GetValue('error').ToString);
       end;
 
-      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('hostname',     FHostName);
       lJSONObject.TryGetValue('country_code', FCountryCode);
       lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
       lJSONObject.TryGetValue('country_name', FCountryName);
-      lJSONObject.TryGetValue('region_name', FRegion);
-      lJSONObject.TryGetValue('city', FCity);
-      lJSONObject.TryGetValue('zip', FZipCode);
-      lJSONObject.TryGetValue('isp', FISP);
-      lJSONObject.TryGetValue('latitude', FLatitude);
-      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.TryGetValue('region_name',  FRegion);
+      lJSONObject.TryGetValue('city',         FCity);
+      lJSONObject.TryGetValue('zip',          FZipCode);
+      lJSONObject.TryGetValue('isp',          FISP);
+      lJSONObject.TryGetValue('latitude',     FLatitude);
+      lJSONObject.TryGetValue('longitude',    FLongitude);
     end;
   end;
 end;
@@ -683,7 +750,7 @@ begin
   //LINGUAGEM DE SAÍDA
   FRESTRequest.Params.AddItem;
   FRESTRequest.Params.Items[3].Name   := 'language';
-  FRESTRequest.Params.Items[3].Value  := 'pt-br';
+  FRESTRequest.Params.Items[3].Value  := FResponseLanguage;
   {$IF CompilerVersion > 32}
   FRESTRequest.Params.Items[3].Kind   := TRESTRequestParameterKind.pkQUERY;
   {$IFEND}
@@ -710,19 +777,20 @@ begin
       begin
         if Assigned(lJSONObject.GetValue('error')) then
           raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
-                                               FProvider, lJSONObject.GetValue('error').ToString);
+                                               FProvider,
+                                               lJSONObject.GetValue('error').ToString);
       end;
 
-      lJSONObject.TryGetValue('hostname', FHostName);
+      lJSONObject.TryGetValue('hostname',     FHostName);
       lJSONObject.TryGetValue('country_code', FCountryCode);
       lJSONObject.GetValue('location').TryGetValue('country_flag', FCountryFlag);
       lJSONObject.TryGetValue('country_name', FCountryName);
-      lJSONObject.TryGetValue('region_name', FRegion);
-      lJSONObject.TryGetValue('city', FCity);
-      lJSONObject.TryGetValue('zip', FZipCode);
-      lJSONObject.TryGetValue('isp', FISP);
-      lJSONObject.TryGetValue('latitude', FLatitude);
-      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.TryGetValue('region_name',  FRegion);
+      lJSONObject.TryGetValue('city',         FCity);
+      lJSONObject.TryGetValue('zip',          FZipCode);
+      lJSONObject.TryGetValue('isp',          FISP);
+      lJSONObject.TryGetValue('latitude',     FLatitude);
+      lJSONObject.TryGetValue('longitude',    FLongitude);
     end;
   end;
 end;
@@ -766,13 +834,13 @@ begin
     begin
       lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
-      lJSONObject.GetValue('location').TryGetValue('country', FCountryCode);
-      lJSONObject.GetValue('location').TryGetValue('region', FRegion);
-      lJSONObject.GetValue('location').TryGetValue('city', FCity);
-      lJSONObject.GetValue('location').TryGetValue('lat', FLatitude);
-      lJSONObject.GetValue('location').TryGetValue('lng', FLongitude);
-      lJSONObject.GetValue('location').TryGetValue('postalCode', FZipCode);
-      lJSONObject.GetValue('location').TryGetValue('timezone', FTimeZoneOffset);
+      lJSONObject.GetValue('location').TryGetValue('country',     FCountryCode);
+      lJSONObject.GetValue('location').TryGetValue('region',      FRegion);
+      lJSONObject.GetValue('location').TryGetValue('city',        FCity);
+      lJSONObject.GetValue('location').TryGetValue('lat',         FLatitude);
+      lJSONObject.GetValue('location').TryGetValue('lng',         FLongitude);
+      lJSONObject.GetValue('location').TryGetValue('postalCode',  FZipCode);
+      lJSONObject.GetValue('location').TryGetValue('timezone',    FTimeZoneOffset);
     end;
   end;
 end;
@@ -785,6 +853,7 @@ procedure TIPGeoLocationRequestIPGeolocationAPI.InternalExecute;
 var
   lJSONObject: TJSONObject;
 begin
+
   //CONFORME A DOCUMENTAÇÃO DA API
   FRESTClient.BaseURL := FIPGeoLocationProvider.URI;
   FRESTClient.Accept  := FIPGeoLocationProvider.RequestAccept;
@@ -809,7 +878,7 @@ begin
 
       lJSONObject.TryGetValue('alpha2', FCountryCode);
       lJSONObject.TryGetValue('alpha3', FCountryCode3);
-      lJSONObject.GetValue('geo').TryGetValue('latitude', FLatitude);
+      lJSONObject.GetValue('geo').TryGetValue('latitude',  FLatitude);
       lJSONObject.GetValue('geo').TryGetValue('longitude', FLongitude);
     end;
   end;
@@ -823,6 +892,7 @@ procedure TIPGeoLocationRequestIPData.InternalExecute;
 var
   lJSONObject: TJSONObject;
 begin
+
   //CONFORME A DOCUMENTAÇÃO DA API
   FRESTClient.BaseURL := FIPGeoLocationProvider.URI;
   FRESTClient.Accept  := FIPGeoLocationProvider.RequestAccept;
@@ -854,18 +924,153 @@ begin
       lJSONObject := FRESTResponse.JSONValue as TJSONObject;
 
       lJSONObject.TryGetValue('country_code', FCountryCode);
-      lJSONObject.TryGetValue('flag', FCountryFlag);
+      lJSONObject.TryGetValue('flag',         FCountryFlag);
       lJSONObject.TryGetValue('country_name', FCountryName);
-      lJSONObject.TryGetValue('region', FRegion);
-      lJSONObject.TryGetValue('city', FCity);
-      lJSONObject.TryGetValue('postal', FZipCode);
-      lJSONObject.TryGetValue('latitude', FLatitude);
-      lJSONObject.TryGetValue('longitude', FLongitude);
+      lJSONObject.TryGetValue('region',       FRegion);
+      lJSONObject.TryGetValue('city',         FCity);
+      lJSONObject.TryGetValue('postal',       FZipCode);
+      lJSONObject.TryGetValue('latitude',     FLatitude);
+      lJSONObject.TryGetValue('longitude',    FLongitude);
       lJSONObject.GetValue('asn').TryGetValue('name', FISP);
       lJSONObject.GetValue('time_zone').TryGetValue('offset', FTimeZoneOffset);
-      lJSONObject.GetValue('time_zone').TryGetValue('name', FTimeZoneName);
+      lJSONObject.GetValue('time_zone').TryGetValue('name',   FTimeZoneName);
     end;
   end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationRequestIPWhois'}
+
+constructor TIPGeoLocationRequestIPWhois.Create(
+  pParent: IIPGeoLocationProvider; const pIP: string);
+begin
+  inherited Create(pParent, pIP);
+  FResponseLanguage := 'pt-BR';
+end;
+
+procedure TIPGeoLocationRequestIPWhois.InternalExecute;
+var
+  lJSONObject: TJSONObject;
+  lRequestSuccessAPI: Boolean;
+begin
+
+  //CONFORME A DOCUMENTAÇÃO DA API
+  FRESTClient.BaseURL := Format('%s%s', [FIPGeoLocationProvider.URI, 'json']);
+  FRESTClient.Accept  := FIPGeoLocationProvider.RequestAccept;
+
+  FRESTRequest.Resource := '{IP}';
+  FRESTRequest.Method := TRESTRequestMethod.rmGET;
+
+  //IP
+  FRESTRequest.Params.AddItem;
+  FRESTRequest.Params.Items[0].Name   := 'IP';
+  FRESTRequest.Params.Items[0].Value  := FIP;
+  FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkURLSEGMENT;
+
+  //LINGUAGEM DE SAÍDA
+  FRESTRequest.Params.AddItem;
+  FRESTRequest.Params.Items[1].Name   := 'lang';
+  FRESTRequest.Params.Items[1].Value  := FResponseLanguage;
+  {$IF CompilerVersion > 32}
+  FRESTRequest.Params.Items[1].Kind   := TRESTRequestParameterKind.pkQUERY;
+  {$IFEND}
+
+  //REQUISIÇÃO
+  inherited;
+
+  //CONFORME A DOCUMENTAÇÃO DA API
+  case FRESTResponse.StatusCode of
+    200:
+    begin
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
+
+      //CONFORME A DOCUMENTAÇÃO DA API
+      lJSONObject.TryGetValue('success', lRequestSuccessAPI);
+      if (lRequestSuccessAPI = False) then
+      begin
+        if Assigned(lJSONObject.GetValue('message')) then
+          raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+                                               FProvider,
+                                               lJSONObject.GetValue('message').ToString);
+      end;
+
+      lJSONObject.TryGetValue('country_code', FCountryCode);
+      lJSONObject.TryGetValue('country',      FCountryName);
+      lJSONObject.TryGetValue('country_flag', FCountryFlag);
+      lJSONObject.TryGetValue('region',       FRegion);
+      lJSONObject.TryGetValue('city',         FCity);
+      lJSONObject.TryGetValue('latitude',     FLatitude);
+      lJSONObject.TryGetValue('longitude',    FLongitude);
+      lJSONObject.TryGetValue('isp',          FISP);
+      lJSONObject.TryGetValue('timezone',     FTimeZoneName);
+      lJSONObject.TryGetValue('timezone_gmt', FTimeZoneOffset);
+    end;
+  end;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationRequestIPDig'}
+
+procedure TIPGeoLocationRequestIPDig.InternalExecute;
+var
+  lJSONObject: TJSONObject;
+  lCoordinates: string;
+  lCoordinatesArray: TArray<string>;
+  lFormatSettings: TFormatSettings;
+begin
+
+  //CONFORME A DOCUMENTAÇÃO DA API
+  FRESTClient.BaseURL := FIPGeoLocationProvider.URI;
+  FRESTClient.Accept  := FIPGeoLocationProvider.RequestAccept;
+
+  FRESTRequest.Resource := '{IP}';
+  FRESTRequest.Method := TRESTRequestMethod.rmGET;
+
+  //IP
+  FRESTRequest.Params.AddItem;
+  FRESTRequest.Params.Items[0].Name   := 'IP';
+  FRESTRequest.Params.Items[0].Value  := FIP;
+  FRESTRequest.Params.Items[0].Kind   := TRESTRequestParameterKind.pkURLSEGMENT;
+
+  //REQUISIÇÃO
+  inherited;
+
+  //CONFORME A DOCUMENTAÇÃO DA API
+  case FRESTResponse.StatusCode of
+    200:
+    begin
+
+      //CONFORME A DOCUMENTAÇÃO DA API
+      if not (FRESTResponse.JSONValue is TJSONObject) then
+      begin
+        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+                                             FProvider,
+                                             FRESTResponse.JSONValue.ToString);
+      end;
+
+      lJSONObject := FRESTResponse.JSONValue as TJSONObject;
+
+      lJSONObject.TryGetValue('country',      FCountryCode);
+      lJSONObject.TryGetValue('country_full', FCountryName);
+      lJSONObject.TryGetValue('region',       FRegion);
+      lJSONObject.TryGetValue('city',         FCity);
+      lJSONObject.TryGetValue('postal',       FZipCode);
+      lJSONObject.TryGetValue('loc',          lCoordinates);
+      lJSONObject.TryGetValue('organization', FISP);
+
+      lCoordinatesArray := lCoordinates.Split([',']);
+      if (Length(lCoordinatesArray) >= 2) then
+      begin
+        lFormatSettings := TFormatSettings.Create('en-US');
+        TryStrToFloat(lCoordinatesArray[0], FLatitude,  lFormatSettings);
+        TryStrToFloat(lCoordinatesArray[1], FLongitude, lFormatSettings);
+      end;
+
+    end;
+  end;
+
 end;
 
 {$ENDREGION}

@@ -68,20 +68,8 @@ type
     [JSONMarshalled(False)]
     FJSON: string;
     function ObjectToJSON: string;
-  protected
-    { protected declarations }
-  public
-    { public declarations }
-    constructor Create; overload;
-    constructor Create(const pIP: string; const pProvider: string;
-                       const pHostName: string; const pCountryCode: string;
-                       const pCountryCode3: string; const pCountryName: string;
-                       const pCountryFlag: string; const pRegion: string;
-                       const pCity: string; const pZipCode: string;
-                       const pLatitude: double; const pLongitude: double;
-                       const pTimeZoneName: string;
-                       const pTimeZoneOffset: string;
-                       const pISP: string); overload;
+
+    //INTERFACE
     function GetIP: string;
     function GetProvider: string;
     function GetHostName: string;
@@ -98,6 +86,20 @@ type
     function GetTimeZoneOffset: string;
     function GetISP: string;
     function GetJSON: string;
+  protected
+    { protected declarations }
+  public
+    { public declarations }
+    constructor Create; overload;
+    constructor Create(const pIP: string; const pProvider: string;
+                       const pHostName: string; const pCountryCode: string;
+                       const pCountryCode3: string; const pCountryName: string;
+                       const pCountryFlag: string; const pRegion: string;
+                       const pCity: string; const pZipCode: string;
+                       const pLatitude: double; const pLongitude: double;
+                       const pTimeZoneName: string;
+                       const pTimeZoneOffset: string;
+                       const pISP: string); overload;
   end;
 
   {$ENDREGION}

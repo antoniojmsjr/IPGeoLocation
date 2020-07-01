@@ -149,6 +149,7 @@ procedure TfrmMain.btnLocalizacaoClick(Sender: TObject);
 var
   lMsgError: string;
 begin
+
   try
     TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
@@ -168,11 +169,11 @@ begin
       lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
 
-      Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(lMsgError), 'W A R N I N G', MB_OK + MB_ICONERROR);
     end;
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(E.Message), 'W A R N I N G', MB_OK + MB_ICONERROR);
     end;
   end;
 end;

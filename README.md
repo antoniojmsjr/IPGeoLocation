@@ -3,6 +3,8 @@
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap%20-brightgreen.svg)
 
+![IPGeolocation](https://user-images.githubusercontent.com/20980984/86278411-b98dc100-bbae-11ea-813e-08cd5d986ca4.png)
+
 # IPGeoLocation
 
 Biblioteca de geolocalização por IP.
@@ -25,7 +27,7 @@ Essa tecnologia é amplamente usada em:
   * Promoções/campanhas destinadas a certo público/local
   * Empresas de turismo, companhias aéreas, redes hoteleiras
   * Entretenimento
-  
+
 * Direcionamento de conteúdo
   * Portais “globais” com conteúdos “locais”
   * Informações no idioma do leitor
@@ -33,7 +35,7 @@ Essa tecnologia é amplamente usada em:
   * Portais de notícias
   * Serviços de informação meteorológica
   * Serviços de emergência
-  
+
 * Controle de acesso (à conteúdos/serviços)
   * Restringir acesso conteúdo/serviços com base na “localização” do usuário
   * Conteúdos específicos para determinado “público”
@@ -52,13 +54,14 @@ Essa tecnologia é amplamente usada em:
 | Provedor | Site | API |
 |---|---|---|
 | IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 |
-| IP Geolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo |
-| IP Stack  | https://ipstack.com | http://api.ipstack.com |
-| IP Ify | https://geo.ipify.org | https://geo.ipify.org/api/v1 |
-| IP API | https://ipapi.com | http://api.ipapi.com/api |
-| IP Info | https://ipinfo.io | https://ipinfo.io |
-| IP Geolocation API | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate |
-| IP Data | https://ipdata.co | https://api.ipdata.co |
+| IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo |
+| IPStack  | https://ipstack.com | http://api.ipstack.com |
+| IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 |
+| IPAPI | https://ipapi.com | http://api.ipapi.com/api |
+| IPInfo | https://ipinfo.io | https://ipinfo.io |
+| IPGeolocation API | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate |
+| IPWhois | https://ipwhois.io | http://ipwhois.app |
+| IPDig | https://ipdig.io | https://ipdig.io |
 
 ## Demo
 [![Download](https://img.shields.io/badge/Download-Demo.zip-orange.svg)](https://github.com/antoniojmsjr/IPGeoLocation/files/4074834/Demo.zip)
@@ -90,11 +93,11 @@ begin
       lMsgError := Concat(lMsgError, Format('Status Text: %s', [E.StatusText]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Message: %s', [E.Message]));
 
-      Application.MessageBox(PWideChar(lMsgError), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(lMsgError), 'W A R N I N G', MB_OK + MB_ICONERROR);
     end;
     on E: Exception do
     begin
-      Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
+      Application.MessageBox(PWideChar(E.Message), 'W A R N I N G', MB_OK + MB_ICONERROR);
     end;
   end;
 end;

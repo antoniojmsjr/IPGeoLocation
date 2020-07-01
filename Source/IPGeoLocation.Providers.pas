@@ -197,6 +197,38 @@ type
 
   {$ENDREGION}
 
+  {$REGION 'TIPGeoLocationProviderIPWhois'}
+
+  TIPGeoLocationProviderIPWhois = class sealed(TIPGeoLocationProviderCustom)
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+    function Settings: IIPGeoLocationProvider; override;
+    function GetRequest: IIPGeoLocationRequest; override;
+  public
+    { public declarations }
+    constructor Create(pParent: IIPGeoLocation); override;
+  end;
+
+  {$ENDREGION}
+
+  {$REGION 'TIPGeoLocationProviderIPDig'}
+
+  TIPGeoLocationProviderIPDig = class sealed(TIPGeoLocationProviderCustom)
+  private
+    { private declarations }
+  protected
+    { protected declarations }
+    function Settings: IIPGeoLocationProvider; override;
+    function GetRequest: IIPGeoLocationRequest; override;
+  public
+    { public declarations }
+    constructor Create(pParent: IIPGeoLocation); override;
+  end;
+
+  {$ENDREGION}
+
 implementation
 
 uses
@@ -232,8 +264,10 @@ end;
 function TIPGeoLocationProviderCustom.GetRequest: IIPGeoLocationRequest;
 begin
   if not FSettingsExecuted then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_PARAMS_NOT_FOUND,
-      FID, 'Configuração não informada.');
+    raise EIPGeoLocationException.Create(
+      TIPGeoLocationExceptionKind.iglEXCEPTION_PARAMS_NOT_FOUND,
+      FID,
+      'Configuration not informed.');
 end;
 
 function TIPGeoLocationProviderCustom.GetEnd: IIPGeoLocation;
@@ -302,12 +336,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'https://ipinfo.io';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_month;
-  FRequestLimit   := 50000;
-  FAvailable      := 0;
+  FURI              := 'https://ipinfo.io';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_month;
+  FRequestLimit     := 50000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -330,12 +364,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'https://api.ipgeolocation.io/ipgeo';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
-  FRequestLimit   := 30000;
-  FAvailable      := 0;
+  FURI              := 'https://api.ipgeolocation.io/ipgeo';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 30000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -388,12 +422,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'http://api.ipapi.com/api/';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
-  FRequestLimit   := 10000;
-  FAvailable      := 0;
+  FURI              := 'http://api.ipapi.com/api/';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 10000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -417,12 +451,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'http://api.ipstack.com/';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
-  FRequestLimit   := 10000;
-  FAvailable      := 0;
+  FURI              := 'http://api.ipstack.com/';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 10000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -446,12 +480,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'https://geo.ipify.org/api/v1/';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
-  FRequestLimit   := 10000;
-  FAvailable      := 0;
+  FURI              := 'https://geo.ipify.org/api/v1/';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 10000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -476,12 +510,12 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'https://api.ipgeolocationapi.com/geolocate';
-  FKey            := EmptyStr; //FULL FREE
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Free;
-  FRequestLimit   := 0;
-  FAvailable      := 0;
+  FURI              := 'https://api.ipgeolocationapi.com/geolocate';
+  FKey              := EmptyStr; //FULL FREE
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Free;
+  FRequestLimit     := 0;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}
@@ -505,12 +539,70 @@ begin
   Result := inherited;
 
   FSettingsExecuted := True;
-  FURI            := 'https://api.ipdata.co';
-  FKey            := 'TOKEN';
-  FRequestAccept  := 'application/json';
-  FRequestPer     := TIPGeoLocationRequestLimitPerKind.iglPer_Day;
-  FRequestLimit   := 1500;
-  FAvailable      := 0;
+  FURI              := 'https://api.ipdata.co';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Day;
+  FRequestLimit     := 1500;
+  FAvailable        := 0;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationProviderIPWhois'}
+
+constructor TIPGeoLocationProviderIPWhois.Create(pParent: IIPGeoLocation);
+begin
+  inherited;
+  FID := '#IPWHOIS';
+end;
+
+function TIPGeoLocationProviderIPWhois.GetRequest: IIPGeoLocationRequest;
+begin
+  inherited;
+  Result := TIPGeoLocationRequestIPWhois.Create(Self, FIP);
+end;
+
+function TIPGeoLocationProviderIPWhois.Settings: IIPGeoLocationProvider;
+begin
+  Result := inherited;
+
+  FSettingsExecuted := True;
+  FURI              := 'http://ipwhois.app/';
+  FKey              := 'TOKEN';
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 10000;
+  FAvailable        := 0;
+end;
+
+{$ENDREGION}
+
+{$REGION 'TIPGeoLocationProviderIPDig'}
+
+constructor TIPGeoLocationProviderIPDig.Create(pParent: IIPGeoLocation);
+begin
+  inherited;
+  FID := '#IPDIG';
+end;
+
+function TIPGeoLocationProviderIPDig.GetRequest: IIPGeoLocationRequest;
+begin
+  inherited;
+  Result := TIPGeoLocationRequestIPDig.Create(Self, FIP);
+end;
+
+function TIPGeoLocationProviderIPDig.Settings: IIPGeoLocationProvider;
+begin
+  Result := inherited;
+
+  FSettingsExecuted := True;
+  FURI              := 'https://ipdig.io/';
+  FKey              := EmptyStr; //FULL FREE
+  FRequestAccept    := 'application/json';
+  FRequestPer       := TIPGeoLocationRequestLimitPerKind.iglPer_Month;
+  FRequestLimit     := 10000;
+  FAvailable        := 0;
 end;
 
 {$ENDREGION}

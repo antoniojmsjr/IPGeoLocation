@@ -5,7 +5,7 @@
         <ProjectVersion>18.8</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Package</AppType>
@@ -59,6 +59,12 @@
         <Cfg_1>true</Cfg_1>
         <Base>true</Base>
     </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
         <Cfg_2>true</Cfg_2>
         <CfgParent>Base</CfgParent>
@@ -83,15 +89,16 @@
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
         <VerInfo_Locale>1046</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Antônio José Medeiros Schneider Júnior;FileDescription=$(MSBuildProjectName);FileVersion=1.2019.11.0;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.ajms.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Antônio José Medeiros Schneider Júnior;FileDescription=$(MSBuildProjectName);FileVersion=1.2020.7.2;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.ajms.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
         <DCC_Description>IP Geolocation v1.0</DCC_Description>
         <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_MapFile>3</DCC_MapFile>
         <DCC_MapFileARM>2</DCC_MapFileARM>
         <SanitizedProjectName>IPGeoLocation</SanitizedProjectName>
-        <VerInfo_MinorVer>2019</VerInfo_MinorVer>
-        <VerInfo_Release>11</VerInfo_Release>
+        <VerInfo_MinorVer>2020</VerInfo_MinorVer>
+        <VerInfo_Release>7</VerInfo_Release>
+        <VerInfo_Build>2</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Android)'!=''">
         <DCC_CBuilderOutput>None</DCC_CBuilderOutput>
@@ -130,16 +137,19 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
-        <DCC_DebugDCUs>true</DCC_DebugDCUs>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
         <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
-        <VerInfo_Locale>1046</VerInfo_Locale>
+        <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Release>0</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -159,13 +169,14 @@
         <DCCReference Include="bindengine.dcp"/>
         <DCCReference Include="bindcomp.dcp"/>
         <DCCReference Include="RESTComponents.dcp"/>
+        <DCCReference Include="Source\IPGeoLocation.Factory.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Interfaces.pas"/>
         <DCCReference Include="Source\IPGeoLocation.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Providers.Factory.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Request.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Response.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Types.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Interfaces.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Providers.Request.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Providers.Response.pas"/>
+        <None Include="Source\APIKey.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

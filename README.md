@@ -113,4 +113,4 @@ end;
 [![Vídeo Youtube](https://user-images.githubusercontent.com/20980984/72579261-5c7ba880-38b7-11ea-9b20-942d806a14d9.png)](https://www.youtube.com/watch?v=x8CVAudNkSY)
 
 ## Licença
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/antoniojmsjr/IPGeoLocation/blob/master/LICENSE)
+`IPGeoLocation` is free and open-source software licensed under the [![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/antoniojmsjr/IPGeoLocation/blob/master/LICENSE)

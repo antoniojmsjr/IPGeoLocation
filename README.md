@@ -2,7 +2,7 @@
 ![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20ever-blue.svg)
 ![Platforms](https://img.shields.io/badge/Platforms-Win32%20and%20Win64-red.svg)
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap%20-brightgreen.svg)
-
+![](https://img.shields.io/github/stars/antoniojmsjr/IPGeoLocation.svg) ![](https://img.shields.io/github/forks/antoniojmsjr/IPGeoLocation.svg) ![](https://img.shields.io/github/issues/antoniojmsjr/IPGeoLocation.svg)
 <p align="center">
   <a href="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">
     <img alt="IPGeolocation" height="150" src="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">

@@ -13,7 +13,7 @@
 
 Biblioteca de geolocalização por IP.
 
-Implementado na linguagem Delphi e utiliza interfaces fluentes para guiar no uso da biblioteca.</br>
+Implementado na linguagem Delphi, e utiliza o conceito de [interface fluente](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca.</br>
 A biblioteca foi desenvolvida utilizando os principais players do mercado de solução de "IP-Geolocation", em anexo a lista dos provedores homologados.
 
 ## O que é a geolocalização de IP?

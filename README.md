@@ -68,7 +68,7 @@ Essa tecnologia é amplamente usada em:
 | IPWhois | https://ipwhois.io | http://ipwhois.app |
 | IPDig | https://ipdig.io | https://ipdig.io |
 
-## Usage
+## Uso
 ```delphi
 uses IPGeoLocation, IPGeoLocation.Interfaces, IPGeoLocation.Types;
 ```
@@ -79,9 +79,9 @@ var
 begin
   try
     TIPGeoLocation.New
-      .IP[Trim(edtIP.Text)]
-      .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
-        .SetAPIKey('TOKEN') //[Optional]: VERIFICAR ARQUIVO: APIKey.inc
+      .IP['201.86.220.241']
+      .Provider[TIPGeoLocationProviderKind.IPInfo]
+        .SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
         .Execute
         .OnResponse(DoResponse);

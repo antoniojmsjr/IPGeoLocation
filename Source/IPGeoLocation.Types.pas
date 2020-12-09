@@ -1,27 +1,3 @@
-{******************************************************************************}
-{                                                                              }
-{           IPGeoLocation.Types                                                }
-{                                                                              }
-{           Copyright (C) Antônio José Medeiros Schneider Júnior               }
-{                                                                              }
-{           https://github.com/antoniojmsjr/IPGeoLocation                      }
-{                                                                              }
-{                                                                              }
-{******************************************************************************}
-{                                                                              }
-{  Licensed under the Apache License, Version 2.0 (the "License");             }
-{  you may not use this file except in compliance with the License.            }
-{  You may obtain a copy of the License at                                     }
-{                                                                              }
-{      http://www.apache.org/licenses/LICENSE-2.0                              }
-{                                                                              }
-{  Unless required by applicable law or agreed to in writing, software         }
-{  distributed under the License is distributed on an "AS IS" BASIS,           }
-{  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    }
-{  See the License for the specific language governing permissions and         }
-{  limitations under the License.                                              }
-{                                                                              }
-{******************************************************************************}
 unit IPGeoLocation.Types;
 
 interface
@@ -40,13 +16,9 @@ type
                                 IPGeolocationAPI,
                                 IPData,
                                 IPWhois,
-                                IPDig);
-
-  TIPGeoLocationRequestLimitPerKind = (iglPer_UNKNOWN,
-                                       iglPer_Day,
-                                       iglPer_Month,
-                                       iglPer_Year,
-                                       iglPer_Free);
+                                IPDig,
+                                IPTwist,
+                                IPLabstack);
 
   TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN,
                                  iglEXCEPTION_HTTP,
@@ -106,21 +78,6 @@ type
   {$REGION 'TIPGeoLocationProviderKindHelper'}
 
   TIPGeoLocationProviderKindHelper = record helper for TIPGeoLocationProviderKind
-  private
-    { private declarations }
-  protected
-    { protected declarations }
-  public
-    { public declarations }
-    function AsString: string;
-    function AsInteger: Integer;
-  end;
-
-  {$ENDREGION}
-
-  {$REGION 'TIPGeoLocationRequestLimitPerKindHelper'}
-
-  TIPGeoLocationRequestLimitPerKindHelper = record helper for TIPGeoLocationRequestLimitPerKind
   private
     { private declarations }
   protected
@@ -202,26 +159,8 @@ begin
     IPData:           Result := 'IPData';
     IPWhois:          Result := 'IPWhois';
     IPDig:            Result := 'IPDig';
-  end;
-end;
-
-{$ENDREGION}
-
-{$REGION 'TIPGeoLocationRequestLimitPerKindHelper'}
-
-function TIPGeoLocationRequestLimitPerKindHelper.AsInteger: Integer;
-begin
-  Result := Ord(Self);
-end;
-
-function TIPGeoLocationRequestLimitPerKindHelper.AsString: string;
-begin
-  case Self of
-    iglPer_UNKNOWN: Result := 'Per_UNKNOWN';
-    iglPer_Day:     Result := 'Per_Day';
-    iglPer_Month:   Result := 'Per_Month';
-    iglPer_Year:    Result := 'Per_Year';
-    iglPer_Free:    Result := 'Per_Free';
+    IPTwist:          Result := 'IPTwist';
+    IPLabstack:       Result := 'IPLabstack';
   end;
 end;
 

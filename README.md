@@ -56,17 +56,20 @@ Essa tecnologia é amplamente usada em:
 
 ## Provedores Homologados
 
-| Provedor | Site | API |
-|---|---|---|
-| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 |
-| IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo |
-| IPStack  | https://ipstack.com | http://api.ipstack.com |
-| IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 |
-| IPAPI | https://ipapi.com | http://api.ipapi.com/api |
-| IPInfo | https://ipinfo.io | https://ipinfo.io |
-| IPGeolocation API | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate |
-| IPWhois | https://ipwhois.io | http://ipwhois.app |
-| IPDig | https://ipdig.io | https://ipdig.io |
+| Provedor | Site | API | Free |
+|---|---|---|---|
+| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 | 10.000 requests yearthly |
+| IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo | 1.500 requests daily |
+| IPStack  | https://ipstack.com | http://api.ipstack.com | 10.000 requests monthly |
+| IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 | 1.000 requests monthly |
+| IPAPI | https://ipapi.com | http://api.ipapi.com/api | 10.000 requests yearthly |
+| IPInfo | https://ipinfo.io | https://ipinfo.io | 50.000 requests monthly |
+| IPGeolocationAPI | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate | unlimited |
+| IPWhois | https://ipwhois.io | http://ipwhois.app | 10.000 requests monthly |
+| IPDig | https://ipdig.io | https://ipdig.io | unlimited |
+| IPData | https://ipdata.co | https://api.ipdata.co | 1.500 requests daily |
+| IPLabstack | https://labstack.com/ip | https://ip.labstack.com/api/v1 | 10.000 requests monthly |
+| IPTwist | https://iptwist.com | https://iptwist.com | 1.000 requests monthly |
 
 ## Uso
 ```delphi
@@ -76,15 +79,19 @@ uses IPGeoLocation, IPGeoLocation.Interfaces, IPGeoLocation.Types;
 ```delphi
 var
   lMsgError: string;
+  lIPGeoLocationResponse: IIPGeoLocationResponse;
 begin
+
   try
-    TIPGeoLocation.New
+
+    lIPGeoLocationResponse := TIPGeoLocation.New
       .IP['201.86.220.241']
       .Provider[TIPGeoLocationProviderKind.IPInfo]
         .SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        .Execute
-        .OnResponse(DoResponse);
+        .SetResponseLanguage('pt-br') //[OPCIONAL]
+        .Execute;
+
   except
     on E: EIPGeoLocationRequestException do
     begin
@@ -103,6 +110,7 @@ begin
       Application.MessageBox(PWideChar(E.Message), 'A T E N Ç Ã O', MB_OK + MB_ICONERROR);
     end;
   end;
+
 end;
 ```
 

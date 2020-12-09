@@ -172,10 +172,20 @@
         <DCCReference Include="Source\IPGeoLocation.Factory.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Interfaces.pas"/>
         <DCCReference Include="Source\IPGeoLocation.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Providers.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Request.pas"/>
-        <DCCReference Include="Source\IPGeoLocation.Response.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Types.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Core.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPInfo.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPGeoLocation.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IP2Location.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPAPI.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPStack.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPIfy.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPGeolocationAPI.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPData.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPWhois.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPDig.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPTwist.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IPLabstack.pas"/>
         <None Include="Source\APIKey.inc"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

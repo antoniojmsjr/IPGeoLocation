@@ -90,7 +90,7 @@ object frmMain: TfrmMain
       Width = 160
       Height = 24
       Style = csDropDownList
-      DropDownCount = 11
+      DropDownCount = 13
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -109,7 +109,9 @@ object frmMain: TfrmMain
         'IPGeolocationAPI'
         'IPData'
         'IPWhois'
-        'IPDig')
+        'IPDig'
+        'IPTwist'
+        'IPLabstack')
     end
     object btnLocalizacao: TButton
       Left = 500
@@ -213,14 +215,14 @@ object frmMain: TfrmMain
           'country_code3 ='
           'country_name ='
           'country_flag ='
-          'region ='
+          'state='
           'city ='
           'zip_code ='
           'latitude ='
-          'longitude ='
-          'timezone_offset ='
-          'timezone_name ='
-          'isp =')
+          'longitude='
+          'timezone_name='
+          'timezone_offset='
+          'isp=')
         TabOrder = 0
         ColWidths = (
           89
@@ -248,8 +250,8 @@ object frmMain: TfrmMain
   object rstClientGetIP: TRESTClient
     BaseURL = 'https://api.ipgeolocation.io/getip'
     Params = <>
-    Left = 88
-    Top = 63
+    Left = 112
+    Top = 31
   end
   object rstRequestGetIP: TRESTRequest
     Client = rstClientGetIP

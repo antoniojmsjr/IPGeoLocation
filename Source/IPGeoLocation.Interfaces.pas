@@ -34,8 +34,6 @@ type
   IIPGeoLocationRequest = interface;
   IIPGeoLocationResponse = interface;
 
-  TIPGeoLocationOnResponseEvent = procedure(const AResponse: IIPGeoLocationResponse) of object;
-
   IIPGeoLocation = interface
     ['{C1592BED-B268-46B1-86FF-243123F7C3E2}']
     function GetIP(const Value: string): IIPGeoLocation;
@@ -46,45 +44,27 @@ type
   end;
 
   IIPGeoLocationProvider = interface
-    ['{64985947-8AEC-4417-BB34-59FC7496EE3A}']
+    ['{DF8EB3BB-7216-4118-BDB9-37ABE51F252E}']
     function GetID: string;
-    function GetURI: string;
-    function GetRequestAccept: string;
+    function GetURL: string;
     function GetAPIKey: string;
-    function GetRequestPer: TIPGeoLocationRequestLimitPerKind;
-    function GetRequestLimit: LongInt;
-    function GetAvailable: TDateTime;
     function GetTimeout: Integer;
     function GetRequest: IIPGeoLocationRequest;
-    function GetEnd: IIPGeoLocation;
 
-    function SetAPIKey(const Value: string): IIPGeoLocationProvider;
-    function SetTimeout(const Value: Integer): IIPGeoLocationProvider;
+    function SetAPIKey(const APIKey: string): IIPGeoLocationProvider;
+    function SetTimeout(const Timeout: Integer): IIPGeoLocationProvider;
 
     property ID: string read GetID;
-    property URI: string read GetURI;
+    property URL: string read GetURL;
     property APIKey: string read GetAPIKey;
-    property RequestAccept: string read GetRequestAccept;
-    property RequestPer: TIPGeoLocationRequestLimitPerKind read GetRequestPer;
-    property RequestLimit: LongInt read GetRequestLimit;
-    property Available: TDateTime read GetAvailable;
     property Timeout: Integer read GetTimeout;
     property Request: IIPGeoLocationRequest read GetRequest;
-    property &End: IIPGeoLocation read GetEnd;
   end;
 
   IIPGeoLocationRequest = interface
     ['{88307C45-E391-4E40-AF73-2FBAB5B1F74B}']
-    function GetEnd: IIPGeoLocationProvider;
-    function GetResponse: IIPGeoLocationResponse;
-
-    function Execute: IIPGeoLocationRequest;
-    function OnResponse(const Method: TIPGeoLocationOnResponseEvent): IIPGeoLocationRequest;
-
+    function Execute: IIPGeoLocationResponse;
     function SetResponseLanguage(const Language: string): IIPGeoLocationRequest;
-
-    property Response: IIPGeoLocationResponse read GetResponse;
-    property &End: IIPGeoLocationProvider read GetEnd;
   end;
 
   IIPGeoLocationResponse = interface
@@ -96,15 +76,16 @@ type
     function GetCountryCode3: string;
     function GetCountryName: string;
     function GetCountryFlag: string;
-    function GetRegion: string;
+    function GetState: string;
     function GetCity: string;
     function GetZipCode: string;
-    function GetLatitude: double;
-    function GetLongitude: double;
+    function GetLatitude: Extended;
+    function GetLongitude: Extended;
     function GetTimeZoneName: string;
     function GetTimeZoneOffset: string;
     function GetISP: string;
-    function GetJSON: string;
+
+    function ToJSON: string;
 
     property IP: string read GetIP;
     property Provider: string read GetProvider;
@@ -113,15 +94,14 @@ type
     property CountryCode3: string read GetCountryCode3;
     property CountryName: string read GetCountryName;
     property CountryFlag: string read GetCountryFlag;
-    property Region: string read GetRegion;
+    property State: string read GetState;
     property City: string read GetCity;
     property ZipCode: string read GetZipCode;
-    property Latitude: double read GetLatitude;
-    property Longitude: double read GetLongitude;
+    property Latitude: Extended read GetLatitude;
+    property Longitude: Extended read GetLongitude;
     property TimeZoneName: string read GetTimeZoneName;
     property TimeZoneOffset: string read GetTimeZoneOffset;
     property ISP: string read GetISP;
-    property JSON: string read GetJSON;
   end;
 
 implementation

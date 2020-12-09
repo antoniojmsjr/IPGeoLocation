@@ -148,16 +148,20 @@ end;
 procedure TfrmMain.btnLocalizacaoClick(Sender: TObject);
 var
   lMsgError: string;
+  lIPGeoLocationResponse: IIPGeoLocationResponse;
 begin
 
   try
-    TIPGeoLocation.New
+    lIPGeoLocationResponse := TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
       .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
-        .SetAPIKey('TOKEN') //[Optional]: VERIFICAR ARQUIVO: APIKey.inc
+        //.SetAPIKey('TOKEN') //[Optional]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        .Execute
-        .OnResponse(DoResponse);
+        //.SetResponseLanguage('pt-br')
+        .Execute;
+
+    //RESULTA DA CONSULTA
+    DoResponse(lIPGeoLocationResponse);
   except
     on E: EIPGeoLocationRequestException do
     begin
@@ -188,7 +192,7 @@ var
   lLatitude: string;
   I: Integer;
 begin
-  lJSONObject := TJSONObject.ParseJSONValue(pResponse.JSON, False) as TJSONObject;
+  lJSONObject := TJSONObject.ParseJSONValue(pResponse.ToJSON, False) as TJSONObject;
 
   try
     mmoJSONGeolocalizacao.Clear;

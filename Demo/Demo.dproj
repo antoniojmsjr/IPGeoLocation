@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>Demo.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -71,13 +71,13 @@
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
         <SanitizedProjectName>Demo</SanitizedProjectName>
         <VerInfo_Locale>1046</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Antônio José Medeiros Schneider Júnior;FileDescription=$(MSBuildProjectName);FileVersion=1.2020.7.2;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.ajms.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Antônio José Medeiros Schneider Júnior;FileDescription=$(MSBuildProjectName);FileVersion=1.2020.12.9;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.ajms.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
         <Custom_Styles>&quot;Iceberg Classico|VCLSTYLE|$(BDSCOMMONDIR)\Styles\IcebergClassico.vsf&quot;</Custom_Styles>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_MinorVer>2020</VerInfo_MinorVer>
-        <VerInfo_Release>7</VerInfo_Release>
+        <VerInfo_Release>12</VerInfo_Release>
         <DCC_UnitSearchPath>..\Library\$(Platform);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
-        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_Build>9</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;RESTComponents;DataSnapServerMidas;DBXDb2Driver;DBXInterBaseDriver;vclactnband;DataSnapServerConnectionMonitoring;vclFireDAC;emsclientfiredac;DataSnapFireDAC;svnui;tethering;TBGConnection;FireDACADSDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;vcltouch;vcldb;bindcompfmx;svn;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;FireDACIBDriver;fmx;fmxdae;vclib;FireDACDBXDriver;dbexpress;IndyCore;vclx;dsnap;DataSnapCommon;emsclient;FireDACCommon;RESTBackendComponents;DataSnapConnectors;VCLRESTComponents;soapserver;TBGQuery;vclie;bindengine;DBXMySQLDriver;FireDACOracleDriver;CloudService;FireDACMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;FireDACCommonDriver;DataSnapClient;inet;bindcompdbx;IndyIPCommon;vcl;DBXSybaseASEDriver;IndyIPServer;IndySystem;FireDACDb2Driver;dsnapcon;TBGFiredacDriver;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;TeeDB;FireDAC;emshosting;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;FireDACASADriver;DBXOdbcDriver;FireDACTDataDriver;FMXTee;soaprtl;DbxCommonDriver;ibxpress;Tee;TBGDBExpressDriver;DataSnapServer;xmlrtl;soapmidas;DataSnapNativeClient;fmxobj;vclwinx;ibxbindings;rtl;emsserverresource;DbxClientDriver;FireDACDSDriver;DBXSybaseASADriver;CustomIPTransport;vcldsnap;bindcomp;appanalytics;DBXInformixDriver;IndyIPClient;bindcompvcl;TeeUI;dbxcds;VclSmp;adortl;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;DataSnapProviderClient;dbrtl;inetdbxpress;FireDACMongoDBDriver;IndyProtocols;MSICS_RAD20_Rtl;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
@@ -106,6 +106,9 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <AppExecutionLevel>requireAdministrator</AppExecutionLevel>
+        <VerInfo_Release>12</VerInfo_Release>
+        <VerInfo_Build>9</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=Antônio José Medeiros Schneider Júnior;FileDescription=$(MSBuildProjectName);FileVersion=1.2020.12.9;InternalName=;LegalCopyright=Antônio José Medeiros Schneider Júnior;LegalTrademarks=;OriginalFilename=;ProgramID=com.ajms.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=https://github.com/antoniojmsjr/IPGeoLocation</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppExecutionLevel>requireAdministrator</AppExecutionLevel>

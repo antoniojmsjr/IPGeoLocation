@@ -1,5 +1,5 @@
 //ARQUIVO COM AS CHAVES DE ACESSO AS APIs DOS PROVEDORES HOMOLOGADO
-//UTILIZADO NA UNIT IPGeoLocation.Providers, ASSIM EVITANDO QUE SEJA INFORMADO NO CÓDIGO FONTE
+//UTILIZADO NA UNIT IPGeoLocation.Providers.xxxx, ASSIM EVITANDO QUE SEJA INFORMADO NO CÓDIGO FONTE
 
 const
   APIKey_IPInfo='';
@@ -10,5 +10,7 @@ const
   APIKey_IPIfy='';
   APIKey_IPGeolocationAPI=''; //FULL FREE
   APIKey_IPData='';
-  APIKey_IPWhois='';
+  APIKey_IPWhois=''; //FULL FREE
   APIKey_IPDig=''; //FULL FREE
+  APIKey_IPTwist='';
+  APIKey_IPLabstack='';

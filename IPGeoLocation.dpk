@@ -39,10 +39,20 @@ contains
   IPGeoLocation.Factory in 'Source\IPGeoLocation.Factory.pas',
   IPGeoLocation.Interfaces in 'Source\IPGeoLocation.Interfaces.pas',
   IPGeoLocation in 'Source\IPGeoLocation.pas',
-  IPGeoLocation.Providers in 'Source\IPGeoLocation.Providers.pas',
-  IPGeoLocation.Request in 'Source\IPGeoLocation.Request.pas',
-  IPGeoLocation.Response in 'Source\IPGeoLocation.Response.pas',
-  IPGeoLocation.Types in 'Source\IPGeoLocation.Types.pas';
+  IPGeoLocation.Types in 'Source\IPGeoLocation.Types.pas',
+  IPGeoLocation.Core in 'Source\IPGeoLocation.Core.pas',
+  IPGeoLocation.Providers.IPInfo in 'Source\IPGeoLocation.Providers.IPInfo.pas',
+  IPGeoLocation.Providers.IPGeoLocation in 'Source\IPGeoLocation.Providers.IPGeoLocation.pas',
+  IPGeoLocation.Providers.IP2Location in 'Source\IPGeoLocation.Providers.IP2Location.pas',
+  IPGeoLocation.Providers.IPAPI in 'Source\IPGeoLocation.Providers.IPAPI.pas',
+  IPGeoLocation.Providers.IPStack in 'Source\IPGeoLocation.Providers.IPStack.pas',
+  IPGeoLocation.Providers.IPIfy in 'Source\IPGeoLocation.Providers.IPIfy.pas',
+  IPGeoLocation.Providers.IPGeolocationAPI in 'Source\IPGeoLocation.Providers.IPGeolocationAPI.pas',
+  IPGeoLocation.Providers.IPData in 'Source\IPGeoLocation.Providers.IPData.pas',
+  IPGeoLocation.Providers.IPWhois in 'Source\IPGeoLocation.Providers.IPWhois.pas',
+  IPGeoLocation.Providers.IPDig in 'Source\IPGeoLocation.Providers.IPDig.pas',
+  IPGeoLocation.Providers.IPTwist in 'Source\IPGeoLocation.Providers.IPTwist.pas',
+  IPGeoLocation.Providers.IPLabstack in 'Source\IPGeoLocation.Providers.IPLabstack.pas';
 
 end.
 

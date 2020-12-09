@@ -49,7 +49,8 @@ type
 
 implementation
 
-uses IPGeoLocation.Factory;
+uses
+  IPGeoLocation.Factory;
 
 {$REGION 'TIPGeoLocation'}
 

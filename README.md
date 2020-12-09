@@ -87,9 +87,10 @@ begin
     lIPGeoLocationResponse := TIPGeoLocation.New
       .IP['201.86.220.241']
       .Provider[TIPGeoLocationProviderKind.IPInfo]
-        .SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
+        //.SetTimeout(5000) //[OPCIONAL]
+        //.SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        .SetResponseLanguage('pt-br') //[OPCIONAL]
+        //.SetResponseLanguage('pt-br') //[OPCIONAL]
         .Execute;
 
   except

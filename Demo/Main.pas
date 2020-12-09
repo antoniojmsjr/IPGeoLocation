@@ -155,9 +155,10 @@ begin
     lIPGeoLocationResponse := TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
       .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
-        //.SetAPIKey('TOKEN') //[Optional]: VERIFICAR ARQUIVO: APIKey.inc
+        //.SetTimeout(5000) //[OPCIONAL]
+        //.SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        //.SetResponseLanguage('pt-br')
+        //.SetResponseLanguage('pt-br')//[OPCIONAL]
         .Execute;
 
     //RESULTA DA CONSULTA

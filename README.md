@@ -56,20 +56,20 @@ Essa tecnologia é amplamente usada em:
 
 ## Provedores Homologados
 
-| Provedor | Site | API | Free |
+| Provedor | Site | API | Free Requests |
 |---|---|---|---|
-| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 | 10.000 requests yearthly |
-| IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo | 1.500 requests daily |
-| IPStack  | https://ipstack.com | http://api.ipstack.com | 10.000 requests monthly |
-| IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 | 1.000 requests monthly |
-| IPAPI | https://ipapi.com | http://api.ipapi.com/api | 10.000 requests yearthly |
-| IPInfo | https://ipinfo.io | https://ipinfo.io | 50.000 requests monthly |
+| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 | 10.000 yearthly |
+| IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo | 1.500 daily |
+| IPStack  | https://ipstack.com | http://api.ipstack.com | 10.000 monthly |
+| IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 | 1.000 monthly |
+| IPAPI | https://ipapi.com | http://api.ipapi.com/api | 10.000 yearthly |
+| IPInfo | https://ipinfo.io | https://ipinfo.io | 50.000 monthly |
 | IPGeolocationAPI | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate | unlimited |
-| IPWhois | https://ipwhois.io | http://ipwhois.app | 10.000 requests monthly |
+| IPWhois | https://ipwhois.io | http://ipwhois.app | 10.000 monthly |
 | IPDig | https://ipdig.io | https://ipdig.io | unlimited |
-| IPData | https://ipdata.co | https://api.ipdata.co | 1.500 requests daily |
-| IPLabstack | https://labstack.com/ip | https://ip.labstack.com/api/v1 | 10.000 requests monthly |
-| IPTwist | https://iptwist.com | https://iptwist.com | 1.000 requests monthly |
+| IPData | https://ipdata.co | https://api.ipdata.co | 1.500 daily |
+| IPLabstack | https://labstack.com/ip | https://ip.labstack.com/api/v1 | 10.000 monthly |
+| IPTwist | https://iptwist.com | https://iptwist.com | 1.000 monthly |
 
 ## Uso
 ```delphi

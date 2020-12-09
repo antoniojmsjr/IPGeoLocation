@@ -210,6 +210,7 @@ object frmMain: TfrmMain
         Strings.Strings = (
           'ip ='
           'provider ='
+          'datetime ='
           'hostname ='
           'country_code ='
           'country_code3 ='

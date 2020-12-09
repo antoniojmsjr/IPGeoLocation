@@ -26,7 +26,7 @@ unit IPGeoLocation.Interfaces;
 
 interface
 
-uses IPGeoLocation.Types;
+uses IPGeoLocation.Types, System.SysUtils;
 
 type
 
@@ -71,6 +71,7 @@ type
     ['{2BA0D4A4-9F3C-4CFF-A485-7EB7FD0638A9}']
     function GetIP: string;
     function GetProvider: string;
+    function GetDateTime: TDateTime;
     function GetHostName: string;
     function GetCountryCode: string;
     function GetCountryCode3: string;
@@ -89,6 +90,7 @@ type
 
     property IP: string read GetIP;
     property Provider: string read GetProvider;
+    property DateTime: TDateTime read GetDateTime;
     property HostName: string read GetHostName;
     property CountryCode: string read GetCountryCode;
     property CountryCode3: string read GetCountryCode3;

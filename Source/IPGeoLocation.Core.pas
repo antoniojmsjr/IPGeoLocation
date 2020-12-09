@@ -41,6 +41,7 @@ type
     function GetIP: string;
     function GetProvider: string;
     function GetHostName: string;
+    function GetDateTime: TDateTime;
     function GetCountryCode: string;
     function GetCountryCode3: string;
     function GetCountryName: string;
@@ -60,6 +61,8 @@ type
     FIP: string;
     [JsonName('provider')]
     FProvider: string;
+    [JsonName('datetime')]
+    FDateTime: TDateTime;
     [JsonName('hostname')]
     FHostName: string;
     [JsonName('country_code')]
@@ -182,6 +185,7 @@ begin
   FJSON := pJSON;
   FIP := pIP;
   FProvider := pProvider;
+  FDateTime := Now();
 end;
 
 procedure TIPGeoLocationResponseCustom.AfterConstruction;
@@ -213,6 +217,11 @@ end;
 function TIPGeoLocationResponseCustom.GetCountryName: string;
 begin
   Result := FCountryName;
+end;
+
+function TIPGeoLocationResponseCustom.GetDateTime: TDateTime;
+begin
+  Result := FDateTime;
 end;
 
 function TIPGeoLocationResponseCustom.GetHostName: string;

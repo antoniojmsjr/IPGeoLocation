@@ -345,7 +345,7 @@ begin
     on E: Exception do
     begin
       raise EIPGeoLocationRequestException.Create(
-        TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
+        TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
         FProvider,
         FHttpRequest.URL,
         lIHTTPResponse.StatusCode,
@@ -371,7 +371,7 @@ begin
                                            FProvider, E.Message);
     end;
     on E: Exception do
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_UNKNOWN,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
                                            FProvider, E.Message);
   end;
 

@@ -21,6 +21,7 @@ type
                                 IPLabstack);
 
   TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN,
+                                 iglEXCEPTION_OTHERS,
                                  iglEXCEPTION_HTTP,
                                  iglEXCEPTION_PARAMS_NOT_FOUND,
                                  iglEXCEPTION_API,
@@ -177,6 +178,7 @@ function TIPGeoLocationExceptionKindHelper.AsString: string;
 begin
   case Self of
     iglEXCEPTION_UNKNOWN:           Result := 'EXCEPTION_UNKNOWN';
+    iglEXCEPTION_OTHERS:            Result := 'EXCEPTION_OTHERS';
     iglEXCEPTION_HTTP:              Result := 'EXCEPTION_HTTP';
     iglEXCEPTION_PARAMS_NOT_FOUND:  Result := 'EXCEPTION_PARAMS_NOT_FOUND';
     iglEXCEPTION_API:               Result := 'EXCEPTION_API';

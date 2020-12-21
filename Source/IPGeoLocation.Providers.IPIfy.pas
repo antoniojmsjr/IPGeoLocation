@@ -39,7 +39,7 @@ type
   protected
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
-    function GetResponse(pIHTTPResponse: IHTTPResponse): IIPGeoLocationResponse; override;
+    function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
   public
     { public declarations }
   end;
@@ -95,7 +95,7 @@ end;
 
 {$REGION 'TIPGeoLocationRequestIPIfy'}
 function TIPGeoLocationRequestIPIfy.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IIPGeoLocationResponse;
+  pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin
   Result := TIPGeoLocationResponseIPIfy.Create(pIHTTPResponse.ContentAsString, FIP, FProvider);
 end;

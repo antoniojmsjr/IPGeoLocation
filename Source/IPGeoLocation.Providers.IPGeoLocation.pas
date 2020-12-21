@@ -39,7 +39,7 @@ type
   protected
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
-    function GetResponse(pIHTTPResponse: IHTTPResponse): IIPGeoLocationResponse; override;
+    function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
@@ -110,7 +110,7 @@ begin
 end;
 
 function TIPGeoLocationRequestIPGeoLocation.GetResponse(
-  pIHTTPResponse: IHTTPResponse): IIPGeoLocationResponse;
+  pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin
   Result := TIPGeoLocationResponseIPGeoLocation.Create(pIHTTPResponse.ContentAsString, FIP, FProvider);
 end;

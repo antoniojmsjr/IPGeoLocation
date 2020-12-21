@@ -84,7 +84,7 @@ type
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-    procedure DoResponse(const pResponse: IIPGeoLocationResponse);
+    procedure Parse(const pResponse: IGeoLocation);
   public
     { Public declarations }
   end;
@@ -148,21 +148,21 @@ end;
 procedure TfrmMain.btnLocalizacaoClick(Sender: TObject);
 var
   lMsgError: string;
-  lIPGeoLocationResponse: IIPGeoLocationResponse;
+  lGeoLocation: IGeoLocation;
 begin
 
   try
-    lIPGeoLocationResponse := TIPGeoLocation.New
+    lGeoLocation := TIPGeoLocation.New
       .IP[Trim(edtIP.Text)]
       .Provider[TIPGeoLocationProviderKind(cbxProvedor.ItemIndex)]
         //.SetTimeout(5000) //[OPCIONAL]
         //.SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        //.SetResponseLanguage('pt-br')//[OPCIONAL]
+        //.SetResultLanguage('pt-br')//[OPCIONAL]
         .Execute;
 
     //RESULTA DA CONSULTA
-    DoResponse(lIPGeoLocationResponse);
+    Parse(lGeoLocation);
   except
     on E: EIPGeoLocationRequestException do
     begin
@@ -183,7 +183,7 @@ begin
   end;
 end;
 
-procedure TfrmMain.DoResponse(const pResponse: IIPGeoLocationResponse);
+procedure TfrmMain.Parse(const pResponse: IGeoLocation);
 const
   cURLMaps = 'https://maps.google.com/maps?q=%s,%s'; //1º: LATITUDE/2º: LONGITUDE
 var

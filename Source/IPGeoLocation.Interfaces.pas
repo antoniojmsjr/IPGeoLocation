@@ -32,7 +32,7 @@ type
 
   IIPGeoLocationProvider = interface;
   IIPGeoLocationRequest = interface;
-  IIPGeoLocationResponse = interface;
+  IGeoLocation = interface;
 
   IIPGeoLocation = interface
     ['{C1592BED-B268-46B1-86FF-243123F7C3E2}']
@@ -63,11 +63,11 @@ type
 
   IIPGeoLocationRequest = interface
     ['{88307C45-E391-4E40-AF73-2FBAB5B1F74B}']
-    function Execute: IIPGeoLocationResponse;
-    function SetResponseLanguage(const Language: string): IIPGeoLocationRequest;
+    function Execute: IGeoLocation;
+    function SetResultLanguage(const Language: string): IIPGeoLocationRequest;
   end;
 
-  IIPGeoLocationResponse = interface
+  IGeoLocation = interface
     ['{2BA0D4A4-9F3C-4CFF-A485-7EB7FD0638A9}']
     function GetIP: string;
     function GetProvider: string;

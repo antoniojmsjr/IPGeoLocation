@@ -1,3 +1,27 @@
+{******************************************************************************}
+{                                                                              }
+{           IPGeoLocation                                                      }
+{                                                                              }
+{           Copyright (C) Antônio José Medeiros Schneider Júnior               }
+{                                                                              }
+{           https://github.com/antoniojmsjr/IPGeoLocation                      }
+{                                                                              }
+{                                                                              }
+{******************************************************************************}
+{                                                                              }
+{  Licensed under the Apache License, Version 2.0 (the "License");             }
+{  you may not use this file except in compliance with the License.            }
+{  You may obtain a copy of the License at                                     }
+{                                                                              }
+{      http://www.apache.org/licenses/LICENSE-2.0                              }
+{                                                                              }
+{  Unless required by applicable law or agreed to in writing, software         }
+{  distributed under the License is distributed on an "AS IS" BASIS,           }
+{  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    }
+{  See the License for the specific language governing permissions and         }
+{  limitations under the License.                                              }
+{                                                                              }
+{******************************************************************************}
 unit IPGeoLocation.Core;
 
 interface
@@ -35,7 +59,7 @@ type
   {$ENDREGION}
 
   {$REGION 'TIPGeoLocationResponseCustom'}
-  TIPGeoLocationResponseCustom = class(TInterfacedObject, IIPGeoLocationResponse)
+  TIPGeoLocationResponseCustom = class(TInterfacedObject, IGeoLocation)
   private
     { private declarations }
     function GetIP: string;
@@ -103,8 +127,8 @@ type
   TIPGeoLocationRequestCustom = class(TInterfacedObject, IIPGeoLocationRequest)
   private
     { private declarations }
-    function Execute: IIPGeoLocationResponse;
-    function SetResponseLanguage(const pLanguage: string): IIPGeoLocationRequest;
+    function Execute: IGeoLocation;
+    function SetResultLanguage(const pLanguage: string): IIPGeoLocationRequest;
     procedure JSONValueIsValid(pJSON: string);
   protected
     { protected declarations }
@@ -118,7 +142,7 @@ type
     FHttpClient: TNetHTTPClient;
     FCheckJSONValue: Boolean;
     function InternalExecute: IHTTPResponse; virtual;
-    function GetResponse(pIHTTPResponse: IHTTPResponse): IIPGeoLocationResponse; virtual; abstract;
+    function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; virtual; abstract;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); virtual;
@@ -312,7 +336,7 @@ begin
   inherited Destroy;
 end;
 
-function TIPGeoLocationRequestCustom.Execute: IIPGeoLocationResponse;
+function TIPGeoLocationRequestCustom.Execute: IGeoLocation;
 var
   lIHTTPResponse: IHTTPResponse;
 begin
@@ -410,7 +434,7 @@ begin
   end;
 end;
 
-function TIPGeoLocationRequestCustom.SetResponseLanguage(
+function TIPGeoLocationRequestCustom.SetResultLanguage(
   const pLanguage: string): IIPGeoLocationRequest;
 begin
   Result := Self;

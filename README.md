@@ -71,6 +71,22 @@ Essa tecnologia é amplamente usada em:
 | IPLabstack | https://labstack.com/ip | https://ip.labstack.com/api/v1 | 10.000 monthly |
 | IPTwist | https://iptwist.com | https://iptwist.com | 1.000 monthly |
 
+## Instalação Automatizada
+
+Utilizando o [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) é possível instalar a biblioteca de forma automatizada.
+
+```
+boss install github.com/antoniojmsjr/IPGeoLocation
+```
+
+## Instalação Manual:
+
+Project > Options > Delphi Compiler > Target > All Configurations > Search path
+
+```
+..\IPGeoLocation\Source
+```
+
 ## Uso
 ```delphi
 uses IPGeoLocation, IPGeoLocation.Interfaces, IPGeoLocation.Types;
@@ -79,12 +95,12 @@ uses IPGeoLocation, IPGeoLocation.Interfaces, IPGeoLocation.Types;
 ```delphi
 var
   lMsgError: string;
-  lIPGeoLocationResponse: IIPGeoLocationResponse;
+  lGeoLocation: IGeoLocation;
 begin
 
   try
 
-    lIPGeoLocationResponse := TIPGeoLocation.New
+    lGeoLocation := TIPGeoLocation.New
       .IP['201.86.220.241']
       .Provider[TIPGeoLocationProviderKind.IPInfo]
         //.SetTimeout(5000) //[OPCIONAL]
@@ -93,6 +109,7 @@ begin
         //.SetResponseLanguage('pt-br') //[OPCIONAL]
         .Execute;
 
+    Application.MessageBox(PWideChar(lGeoLocation.ToJSON), 'JSON', MB_OK + MB_ICONINFORMATION); //JSON COM O RESULTADO DA GEOLOCALIZAÇÃO
   except
     on E: EIPGeoLocationRequestException do
     begin

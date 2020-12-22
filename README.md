@@ -106,7 +106,7 @@ begin
         //.SetTimeout(5000) //[OPCIONAL]
         //.SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        //.SetResponseLanguage('pt-br') //[OPCIONAL]
+        //.SetResultLanguage('pt-br') //[OPCIONAL]
         .Execute;
 
     Application.MessageBox(PWideChar(lGeoLocation.ToJSON), 'JSON', MB_OK + MB_ICONINFORMATION); //JSON COM O RESULTADO DA GEOLOCALIZAÇÃO

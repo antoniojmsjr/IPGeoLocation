@@ -1,0 +1,9 @@
+{
+	"name": "IPGeoLocation",
+	"description": "Biblioteca de geolocalização por IP.",
+	"version": "1.0.0",
+	"homepage": "https://github.com/antoniojmsjr/IPGeoLocation",
+	"mainsrc": "Source",
+	"projects": [],
+	"dependencies": {}
+}

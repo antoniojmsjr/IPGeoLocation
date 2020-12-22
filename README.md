@@ -73,7 +73,7 @@ Essa tecnologia é amplamente usada em:
 
 ## Instalação Automatizada
 
-Utilizando o [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) é possível instalar a biblioteca de forma automatizada.
+Utilizando o [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) é possível instalar a biblioteca de forma automática.
 
 ```
 boss install github.com/antoniojmsjr/IPGeoLocation
@@ -99,7 +99,6 @@ var
 begin
 
   try
-
     lGeoLocation := TIPGeoLocation.New
       .IP['201.86.220.241']
       .Provider[TIPGeoLocationProviderKind.IPInfo]

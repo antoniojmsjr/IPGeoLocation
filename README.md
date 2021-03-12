@@ -1,6 +1,6 @@
 ![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 ![Memory Leak Verified YES](https://img.shields.io/badge/Memory%20Leak%20Verified%3F-yes-green.svg)
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20above-blue.svg)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20above-brightgreen.svg)
 ![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap,%20Horse,%20RDW,%20RADServer-brightgreen.svg)
 ![Stars](https://img.shields.io/github/stars/antoniojmsjr/IPGeoLocation.svg) ![Forks](https://img.shields.io/github/forks/antoniojmsjr/IPGeoLocation.svg) ![Issues](https://img.shields.io/github/issues/antoniojmsjr/IPGeoLocation.svg)
 <p align="center">

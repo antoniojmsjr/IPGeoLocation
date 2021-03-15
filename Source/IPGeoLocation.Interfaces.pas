@@ -79,6 +79,7 @@ type
     function GetCountryFlag: string;
     function GetState: string;
     function GetCity: string;
+    function GetDistrict: string;
     function GetZipCode: string;
     function GetLatitude: Extended;
     function GetLongitude: Extended;
@@ -98,6 +99,7 @@ type
     property CountryFlag: string read GetCountryFlag;
     property State: string read GetState;
     property City: string read GetCity;
+    property District: string read GetDistrict;
     property ZipCode: string read GetZipCode;
     property Latitude: Extended read GetLatitude;
     property Longitude: Extended read GetLongitude;

@@ -14,3 +14,5 @@ const
   APIKey_IPDig=''; //FULL FREE
   APIKey_IPTwist='';
   APIKey_IPLabstack='';
+  APIKey_IP_API=''; //FULL FREE
+  APIKey_DB_IP='free';

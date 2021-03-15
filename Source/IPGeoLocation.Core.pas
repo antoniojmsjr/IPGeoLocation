@@ -72,6 +72,7 @@ type
     function GetCountryFlag: string;
     function GetState: string;
     function GetCity: string;
+    function GetDistrict: string;
     function GetZipCode: string;
     function GetLatitude: Extended;
     function GetLongitude: Extended;
@@ -101,6 +102,8 @@ type
     FState: string;
     [JsonName('city')]
     FCity: string;
+    [JsonName('district')]
+    FDistrict: string;
     [JsonName('zip_code')]
     FZipCode: string;
     [JsonName('latitude')]
@@ -246,6 +249,11 @@ end;
 function TIPGeoLocationResponseCustom.GetDateTime: TDateTime;
 begin
   Result := FDateTime;
+end;
+
+function TIPGeoLocationResponseCustom.GetDistrict: string;
+begin
+  Result := FDistrict;
 end;
 
 function TIPGeoLocationResponseCustom.GetHostName: string;

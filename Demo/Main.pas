@@ -82,6 +82,7 @@ type
     procedure btnLocalizacaoClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure vleJSONClick(Sender: TObject);
   private
     { Private declarations }
     procedure Parse(const pResponse: IGeoLocation);
@@ -221,6 +222,11 @@ begin
   if (lLatitude <> EmptyStr) and
      (lLogitude <> EmptyStr) then
     wbrMaps.Navigate(Format(cURLMaps, [lLatitude, lLogitude]));
+end;
+
+procedure TfrmMain.vleJSONClick(Sender: TObject);
+begin
+
 end;
 
 { TBrowserEmulationAdjuster }

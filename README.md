@@ -14,8 +14,8 @@
 
 Biblioteca de geolocalização por IP.
 
-Implementado na linguagem Delphi, e utiliza o conceito de [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca.</br>
-A biblioteca foi desenvolvida utilizando os principais players do mercado de solução de "IP-Geolocation", em anexo a lista dos provedores homologados.
+Implementado na linguagem Delphi, utiliza o conceito de [fluent interface](https://en.wikipedia.org/wiki/Fluent_interface) para guiar no uso da biblioteca.</br>
+Biblioteca desenvolvida utilizando os principais players do mercado de solução de "IP-Geolocation", em anexo a lista dos provedores homologados.
 
 ## O que é a geolocalização de IP?
 
@@ -65,16 +65,18 @@ Essa tecnologia é amplamente usada em:
 | IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 | 1.000 monthly |
 | IPAPI | https://ipapi.com | http://api.ipapi.com/api | 10.000 yearthly |
 | IPInfo | https://ipinfo.io | https://ipinfo.io | 50.000 monthly |
-| IPGeolocationAPI | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate | unlimited |
+| IPGeolocationAPI | https://ipgeolocationapi.com | https://api.ipgeolocationapi.com/geolocate | Unlimited |
 | IPWhois | https://ipwhois.io | http://ipwhois.app | 10.000 monthly |
-| IPDig | https://ipdig.io | https://ipdig.io | unlimited |
+| IPDig | https://ipdig.io | https://ipdig.io | Unlimited |
 | IPData | https://ipdata.co | https://api.ipdata.co | 1.500 daily |
 | IPLabstack | https://labstack.com/ip | https://ip.labstack.com/api/v1 | 10.000 monthly |
 | IPTwist | https://iptwist.com | https://iptwist.com | 1.000 monthly |
+| IP-API | https://ip-api.com | http://ip-api.com | Unlimited |
+| DB-IP | https://db-ip.com | http://api.db-ip.com/v2 | Unlimited |
 
 ## Instalação Automatizada
 
-Utilizando o [**Boss**](https://github.com/HashLoad/boss) (Dependency Manager for Delphi) é possível instalar a biblioteca de forma automática.
+Utilizando o [**Boss**](https://github.com/HashLoad/boss) (Dependency anager for Delphi) é possível instalar a biblioteca de forma automática.
 
 ```
 boss install github.com/antoniojmsjr/IPGeoLocation

@@ -51,7 +51,8 @@ uses
   IPGeoLocation.Providers.IPStack, IPGeoLocation.Providers.IPIfy,
   IPGeoLocation.Providers.IPGeolocationAPI, IPGeoLocation.Providers.IPData,
   IPGeoLocation.Providers.IPWhois, IPGeoLocation.Providers.IPDig,
-  IPGeoLocation.Providers.IPTwist, IPGeoLocation.Providers.IPLabstack;
+  IPGeoLocation.Providers.IPTwist, IPGeoLocation.Providers.IPLabstack,
+  IPGeoLocation.Providers.IP_API, IPGeoLocation.Providers.DB_IP;
 
 {$REGION 'TIPGeoLocationProviderFactory'}
 
@@ -72,6 +73,8 @@ begin
     TIPGeoLocationProviderKind.IPDig:             Result := TIPGeoLocationProviderIPDig.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPTwist:           Result := TIPGeoLocationProviderIPTwist.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPLabstack:        Result := TIPGeoLocationProviderIPLabstack.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IP_API:            Result := TIPGeoLocationProviderIP_Api.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.DB_IP:             Result := TIPGeoLocationProviderDB_IP.Create(pIPGeoLocation, pIP);
   else
     raise Exception.Create('Provider not implemented...');
   end;

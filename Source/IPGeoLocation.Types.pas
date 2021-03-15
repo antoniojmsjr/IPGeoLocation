@@ -42,7 +42,9 @@ type
                                 IPWhois,
                                 IPDig,
                                 IPTwist,
-                                IPLabstack);
+                                IPLabstack,
+                                IP_API,
+                                DB_IP);
 
   TIPGeoLocationExceptionKind = (iglEXCEPTION_UNKNOWN,
                                  iglEXCEPTION_OTHERS,
@@ -186,6 +188,8 @@ begin
     IPDig:            Result := 'IPDig';
     IPTwist:          Result := 'IPTwist';
     IPLabstack:       Result := 'IPLabstack';
+    IP_API:           Result := 'IP-API';
+    DB_IP:            Result := 'DB-IP';
   end;
 end;
 

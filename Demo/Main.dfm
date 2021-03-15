@@ -90,7 +90,7 @@ object frmMain: TfrmMain
       Width = 160
       Height = 24
       Style = csDropDownList
-      DropDownCount = 13
+      DropDownCount = 15
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -111,7 +111,9 @@ object frmMain: TfrmMain
         'IPWhois'
         'IPDig'
         'IPTwist'
-        'IPLabstack')
+        'IPLabstack'
+        'IP-API'
+        'DB-IP')
     end
     object btnLocalizacao: TButton
       Left = 500
@@ -218,6 +220,7 @@ object frmMain: TfrmMain
           'country_flag ='
           'state='
           'city ='
+          'District ='
           'zip_code ='
           'latitude ='
           'longitude='
@@ -225,6 +228,7 @@ object frmMain: TfrmMain
           'timezone_offset='
           'isp=')
         TabOrder = 0
+        OnClick = vleJSONClick
         ColWidths = (
           89
           209)

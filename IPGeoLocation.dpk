@@ -52,7 +52,9 @@ contains
   IPGeoLocation.Providers.IPWhois in 'Source\IPGeoLocation.Providers.IPWhois.pas',
   IPGeoLocation.Providers.IPDig in 'Source\IPGeoLocation.Providers.IPDig.pas',
   IPGeoLocation.Providers.IPTwist in 'Source\IPGeoLocation.Providers.IPTwist.pas',
-  IPGeoLocation.Providers.IPLabstack in 'Source\IPGeoLocation.Providers.IPLabstack.pas';
+  IPGeoLocation.Providers.IPLabstack in 'Source\IPGeoLocation.Providers.IPLabstack.pas',
+  IPGeoLocation.Providers.IP_API in 'Source\IPGeoLocation.Providers.IP_API.pas',
+  IPGeoLocation.Providers.DB_IP in 'Source\IPGeoLocation.Providers.DB_IP.pas';
 
 end.
 

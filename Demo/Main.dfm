@@ -255,8 +255,8 @@ object frmMain: TfrmMain
   object rstClientGetIP: TRESTClient
     BaseURL = 'https://api.ipgeolocation.io/getip'
     Params = <>
-    Left = 112
-    Top = 31
+    Left = 80
+    Top = 71
   end
   object rstRequestGetIP: TRESTRequest
     Client = rstClientGetIP

@@ -255,6 +255,7 @@ object frmMain: TfrmMain
   object rstClientGetIP: TRESTClient
     BaseURL = 'https://api.ipgeolocation.io/getip'
     Params = <>
+    SecureProtocols = [TLS1, TLS11, TLS12]
     Left = 80
     Top = 71
   end

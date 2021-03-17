@@ -105,7 +105,7 @@ constructor TIPGeoLocationRequestIP2Location.Create(
   pParent: IIPGeoLocationProvider; const pIP: string);
 begin
   inherited Create(pParent, pIP);
-  FResponseLanguage := 'en';
+  FResponseLanguageCode := 'en';
 end;
 
 function TIPGeoLocationRequestIP2Location.GetResponse(
@@ -124,7 +124,7 @@ begin
   lURL := TURI.Create(Format('%s/%s/', [FIPGeoLocationProvider.URL, 'v2']));
   lURL.AddParameter('key', FIPGeoLocationProvider.APIKey);
   lURL.AddParameter('ip', FIP);
-  lURL.AddParameter('lang', FResponseLanguage);
+  lURL.AddParameter('lang', FResponseLanguageCode);
   lURL.AddParameter('format', 'json');
   lURL.AddParameter('package', 'WS24');
   lURL.AddParameter('addon', 'country,time_zone_info');

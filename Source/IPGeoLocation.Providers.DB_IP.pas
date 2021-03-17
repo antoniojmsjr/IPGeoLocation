@@ -102,7 +102,7 @@ constructor TIPGeoLocationRequestDB_IP.Create(pParent: IIPGeoLocationProvider;
   const pIP: string);
 begin
   inherited Create(pParent, pIP);
-  FResponseLanguage := 'en-US';
+  FResponseLanguageCode := 'en-US';
 end;
 
 function TIPGeoLocationRequestDB_IP.GetResponse(
@@ -123,7 +123,7 @@ begin
                       FIPGeoLocationProvider.URL, 'v2', FIPGeoLocationProvider.APIKey, FIP]));
 
   FHttpRequest.URL := lURL.ToString;
-  FHttpRequest.CustomHeaders['Accept-Language'] := FResponseLanguage;
+  FHttpRequest.CustomHeaders['Accept-Language'] := FResponseLanguageCode;
 
   //REQUISIÇÃO
   Result := inherited InternalExecute;

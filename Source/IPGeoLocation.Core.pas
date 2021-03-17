@@ -131,7 +131,7 @@ type
   private
     { private declarations }
     function Execute: IGeoLocation;
-    function SetResultLanguage(const pLanguage: string): IIPGeoLocationRequest;
+    function SetResultLanguageCode(const pLanguageCode: string): IIPGeoLocationRequest;
     procedure JSONValueIsValid(pJSON: string);
   protected
     { protected declarations }
@@ -139,7 +139,7 @@ type
     FIPGeoLocationProvider: IIPGeoLocationProvider;
     FIP: string;
     FProvider: string;
-    FResponseLanguage: string;
+    FResponseLanguageCode: string;
     FRequestHeaders: TNetHeaders;
     FHttpRequest: TNetHTTPRequest;
     FHttpClient: TNetHTTPClient;
@@ -442,11 +442,11 @@ begin
   end;
 end;
 
-function TIPGeoLocationRequestCustom.SetResultLanguage(
-  const pLanguage: string): IIPGeoLocationRequest;
+function TIPGeoLocationRequestCustom.SetResultLanguageCode(
+  const pLanguageCode: string): IIPGeoLocationRequest;
 begin
   Result := Self;
-  FResponseLanguage := pLanguage;
+  FResponseLanguageCode := pLanguageCode;
 end;
 {$ENDREGION}
 

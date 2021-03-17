@@ -101,7 +101,7 @@ constructor TIPGeoLocationRequestIPAPI.Create(
   pParent: IIPGeoLocationProvider; const pIP: string);
 begin
   inherited Create(pParent, pIP);
-  FResponseLanguage := 'en';
+  FResponseLanguageCode := 'en';
 end;
 
 function TIPGeoLocationRequestIPAPI.GetResponse(
@@ -119,7 +119,7 @@ begin
   //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s/%s/%s', [FIPGeoLocationProvider.URL, 'api', FIP]));
   lURL.AddParameter('access_key', FIPGeoLocationProvider.APIKey);
-  lURL.AddParameter('language', FResponseLanguage);
+  lURL.AddParameter('language', FResponseLanguageCode);
   lURL.AddParameter('output', 'json');
   lURL.AddParameter('hostname', '1');
 

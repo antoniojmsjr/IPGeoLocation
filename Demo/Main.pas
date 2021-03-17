@@ -159,7 +159,7 @@ begin
         //.SetTimeout(5000) //[OPCIONAL]
         //.SetAPIKey('TOKEN') //[OPCIONAL]: VERIFICAR ARQUIVO: APIKey.inc
       .Request
-        //.SetResultLanguage('pt-br')//[OPCIONAL]
+        //.SetResultLanguageCode('pt-br')//[OPCIONAL]
         .Execute;
 
     //RESULTA DA CONSULTA

@@ -64,7 +64,7 @@ type
   IIPGeoLocationRequest = interface
     ['{88307C45-E391-4E40-AF73-2FBAB5B1F74B}']
     function Execute: IGeoLocation;
-    function SetResultLanguage(const Language: string): IIPGeoLocationRequest;
+    function SetResultLanguageCode(const LanguageCode: string): IIPGeoLocationRequest;
   end;
 
   IGeoLocation = interface

@@ -194,7 +194,8 @@ function TIPGeoLocationProviderCustom.SetAPIKey(
   const pAPIKey: string): IIPGeoLocationProvider;
 begin
   Result := Self;
-  FAPIKey := pAPIKey.Trim;
+  if not pAPIKey.Trim.IsEmpty then
+    FAPIKey := pAPIKey.Trim;
 end;
 
 function TIPGeoLocationProviderCustom.SetTimeout(

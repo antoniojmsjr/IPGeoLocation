@@ -263,7 +263,7 @@ end;
 
 function TIPGeoLocationResponseCustom.GetIP: string;
 begin
-  Result := FISP;
+  Result := FIP;
 end;
 
 function TIPGeoLocationResponseCustom.GetISP: string;
@@ -446,7 +446,8 @@ function TIPGeoLocationRequestCustom.SetResultLanguageCode(
   const pLanguageCode: string): IIPGeoLocationRequest;
 begin
   Result := Self;
-  FResponseLanguageCode := pLanguageCode;
+  if not pLanguageCode.Trim.IsEmpty then
+    FResponseLanguageCode := pLanguageCode;
 end;
 {$ENDREGION}
 

@@ -109,12 +109,14 @@ var
 begin
   //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s', [FIPGeoLocationProvider.URL]));
+
   FHttpRequest.URL := lURL.ToString;
   FHttpRequest.MethodString := 'POST';
   FHttpRequest.Client.ContentType := 'application/json';
 
   //API KEY
-  FRequestHeaders := FRequestHeaders + [TNetHeader.Create('X-IPTWIST-TOKEN', FIPGeoLocationProvider.APIKey)];
+  FRequestHeaders := FRequestHeaders
+                   + [TNetHeader.Create('X-IPTWIST-TOKEN', FIPGeoLocationProvider.APIKey)];
 
   lIP := nil;
   lBody := nil;

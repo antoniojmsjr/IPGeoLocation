@@ -124,6 +124,7 @@ begin
   lURL.AddParameter('apiKey', FIPGeoLocationProvider.APIKey);
   lURL.AddParameter('ip', FIP);
   lURL.AddParameter('lang', FResponseLanguageCode);
+
   FHttpRequest.URL := lURL.ToString;
 
   //REQUISIÇÃO

@@ -117,10 +117,11 @@ var
 begin
   //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s/%s', [FIPGeoLocationProvider.URL, FIP]));
-  FRequestHeaders := [TNameValuePair.Create('Authorization',
-                                     Format('%s %s', ['Bearer', FIPGeoLocationProvider.APIKey]))];
-
   FHttpRequest.URL := lURL.ToString;
+
+  FRequestHeaders := FRequestHeaders
+                   + [TNameValuePair.Create('Authorization',
+                                     Format('%s %s', ['Bearer', FIPGeoLocationProvider.APIKey]))];
 
   //REQUISIÇÃO
   Result := inherited InternalExecute;

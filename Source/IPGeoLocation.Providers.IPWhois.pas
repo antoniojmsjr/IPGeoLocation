@@ -134,7 +134,9 @@ begin
     begin
       if Assigned(lJSONObject.GetValue('message')) then
         raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+                                             FIP,
                                              FProvider,
+                                             Now(),
                                              lJSONObject.GetValue('message').ToString);
     end;
   finally

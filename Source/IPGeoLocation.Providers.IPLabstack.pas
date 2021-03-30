@@ -118,7 +118,8 @@ begin
   FHttpRequest.URL := lURL.ToString;
 
   //API KEY
-  FRequestHeaders := FRequestHeaders + [TNetHeader.Create('Authorization', Format('Bearer %s', [FIPGeoLocationProvider.APIKey]))];
+  FRequestHeaders := FRequestHeaders
+                   + [TNetHeader.Create('Authorization', Format('Bearer %s', [FIPGeoLocationProvider.APIKey]))];
 
   //REQUISIÇÃO
   Result := inherited InternalExecute;

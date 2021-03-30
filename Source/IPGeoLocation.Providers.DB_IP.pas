@@ -137,7 +137,9 @@ begin
     begin
       lRequestMessage := Format('%s: %s', [lJSONObject.GetValue('errorCode').ToString, lJSONObject.GetValue('error').ToString]);
       raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+                                           FIP,
                                            FProvider,
+                                           Now(),
                                            lRequestMessage);
     end;
   finally

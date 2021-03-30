@@ -59,17 +59,23 @@ type
   EIPGeoLocationException = class(Exception)
   strict private
     { private declarations }
+    FIP: string;
+    FProvider: string;
+    FDateTime: TDateTime;
+    FKind: TIPGeoLocationExceptionKind;
   protected
     { protected declarations }
-    FProvider: string;
-    FKind: TIPGeoLocationExceptionKind;
   public
     { public declarations }
     constructor Create(const pKind: TIPGeoLocationExceptionKind;
+                       const pIP: string;
                        const pProvider: string;
+                       const pDateTime: TDateTime;
                        const pMessage: string);
     property Kind: TIPGeoLocationExceptionKind read FKind;
+    property IP: string read FIP;
     property Provider: string read FProvider;
+    property DateTime: TDateTime read FDateTime;
   end;
 
   {$ENDREGION}
@@ -88,7 +94,9 @@ type
   public
     { public declarations }
     constructor Create(const pKind: TIPGeoLocationExceptionKind;
+                       const pIP: string;
                        const pProvider: string;
+                       const pDateTime: TDateTime;
                        const pURL: string;
                        const pStatusCode: Integer;
                        const pStatusText: string;
@@ -136,12 +144,15 @@ implementation
 
 {$REGION 'EIPGeoLocationException'}
 
-constructor EIPGeoLocationException.Create(const pKind: TIPGeoLocationExceptionKind;
-  const pProvider: string;
+constructor EIPGeoLocationException.Create(
+  const pKind: TIPGeoLocationExceptionKind;
+  const pIP: string; const pProvider: string; const pDateTime: TDateTime;
   const pMessage: string);
 begin
   FKind := pKind;
+  FIP := pIP;
   FProvider := pProvider;
+  FDateTime := pDateTime;
   Message := pMessage;
 end;
 
@@ -149,18 +160,19 @@ end;
 
 {$REGION 'EIPGeoLocationRequestException'}
 
-constructor EIPGeoLocationRequestException.Create(const pKind: TIPGeoLocationExceptionKind;
-  const pProvider: string; const pURL: string; const pStatusCode: Integer;
+constructor EIPGeoLocationRequestException.Create(
+  const pKind: TIPGeoLocationExceptionKind;
+  const pIP: string; const pProvider: string; const pDateTime: TDateTime;
+  const pURL: string; const pStatusCode: Integer;
   const pStatusText: string; const pMethod: string;
   const pMessage: string);
 begin
-  FKind := pKind;
-  FProvider := pProvider;
+  inherited Create(pKind, pIP, pProvider, pDateTime, pMessage);
+
   FURL := pURL;
   FStatusCode := pStatusCode;
   FStatusText := pStatusText;
   FMethod := pMethod;
-  Message := pMessage;
 end;
 
 {$ENDREGION}

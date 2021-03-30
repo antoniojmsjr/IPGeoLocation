@@ -140,7 +140,9 @@ begin
     begin
       if Assigned(lJSONObject.GetValue('error')) then
         raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+                                             FIP,
                                              FProvider,
+                                             Now(),
                                              lJSONObject.GetValue('error').ToString);
     end;
   finally

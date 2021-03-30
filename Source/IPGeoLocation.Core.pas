@@ -347,7 +347,11 @@ end;
 function TIPGeoLocationRequestCustom.Execute: IGeoLocation;
 var
   lIHTTPResponse: IHTTPResponse;
+  lStatusCode: Integer;
+  lStatusText: String;
 begin
+  lStatusCode := 0;
+  lStatusText := EmptyStr;
 
   //PARAMS
   FHttpRequest.ConnectionTimeout := FIPGeoLocationProvider.Timeout;
@@ -365,23 +369,39 @@ begin
   except
     on E: EIPGeoLocationException do
     begin
+      if Assigned(lIHTTPResponse) then
+      begin
+        lStatusCode := lIHTTPResponse.StatusCode;
+        lStatusText := lIHTTPResponse.StatusText;
+      end;
+
       raise EIPGeoLocationRequestException.Create(
         E.Kind,
+        E.IP,
         E.Provider,
+        E.DateTime,
         FHttpRequest.URL,
-        lIHTTPResponse.StatusCode,
-        lIHTTPResponse.StatusText,
+        lStatusCode,
+        lStatusText,
         FHttpRequest.MethodString,
         E.Message);
     end;
     on E: Exception do
     begin
+      if Assigned(lIHTTPResponse) then
+      begin
+        lStatusCode := lIHTTPResponse.StatusCode;
+        lStatusText := lIHTTPResponse.StatusText;
+      end;
+
       raise EIPGeoLocationRequestException.Create(
         TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
+        FIP,
         FProvider,
+        Now(),
         FHttpRequest.URL,
-        lIHTTPResponse.StatusCode,
-        lIHTTPResponse.StatusText,
+        lStatusCode,
+        lStatusText,
         FHttpRequest.MethodString,
         E.Message);
     end;
@@ -400,11 +420,17 @@ begin
     on E: ENetHTTPClientException do
     begin
       raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_HTTP,
-                                           FProvider, E.Message);
+                                           FIP,
+                                           FProvider,
+                                           Now(),
+                                           E.Message);
     end;
     on E: Exception do
       raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
-                                           FProvider, E.Message);
+                                           FIP,
+                                           FProvider,
+                                           Now(),
+                                           E.Message);
   end;
 
   //JSON
@@ -413,12 +439,18 @@ begin
   //RESPOSTA COM CONTEÚDO?
   if lJSON.IsEmpty then
     raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT,
-                                         FProvider, 'Without content.');
+                                         FIP,
+                                         FProvider,
+                                         Now(),
+                                         'Without content.');
 
   //CÓDIGO DE RETORNO DO SERVIDOR
   if (Result.StatusCode <> 200) then
     raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
-                                         FProvider, lJSON);
+                                         FIP,
+                                         FProvider,
+                                         Now(),
+                                         lJSON);
 
   //VERIFICAÇÃO DO RETORNO DO JSON
   JSONValueIsValid(lJSON);
@@ -436,7 +468,10 @@ begin
     lJSONValue := TJSONObject.ParseJSONValue(pJSON);
     if not Assigned(lJSONValue) then
       raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID,
-                                           FProvider, 'JSON invalid');
+                                           FIP,
+                                           FProvider,
+                                           Now(),
+                                           'JSON invalid');
   finally
     lJSONValue.Free;
   end;

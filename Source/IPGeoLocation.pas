@@ -26,12 +26,12 @@ unit IPGeoLocation;
 
 interface
 
-uses System.SysUtils, System.Classes, IPGeoLocation.Types, IPGeoLocation.Interfaces;
+uses
+  System.SysUtils, System.Classes, IPGeoLocation.Types, IPGeoLocation.Interfaces;
 
 type
 
   {$REGION 'TIPGeoLocation'}
-
   TIPGeoLocation = class sealed(TInterfacedObject, IIPGeoLocation)
   strict private
     { private declarations }
@@ -44,7 +44,6 @@ type
     { public declarations }
     class function New: IIPGeoLocation;
   end;
-
   {$ENDREGION}
 
 implementation
@@ -53,7 +52,6 @@ uses
   IPGeoLocation.Factory;
 
 {$REGION 'TIPGeoLocation'}
-
 class function TIPGeoLocation.New: IIPGeoLocation;
 begin
   Result := Self.Create();
@@ -70,7 +68,6 @@ begin
   Result := Self;
   FIP := Value;
 end;
-
 {$ENDREGION}
 
 end.

@@ -135,8 +135,8 @@ begin
     lJSONObject.TryGetValue('errorCode', lRequestError);
     if (lRequestError <> EmptyStr) then
     begin
-      lRequestMessage := Format('%s: %s', [lJSONObject.GetValue('errorCode').ToString, lJSONObject.GetValue('error').ToString]);
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+      lRequestMessage := Format('%s: %s', [lJSONObject.GetValue('errorCode').ToJSON, lJSONObject.GetValue('error').ToJSON]);
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                            FIP,
                                            FProvider,
                                            Now(),

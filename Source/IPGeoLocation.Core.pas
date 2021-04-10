@@ -63,6 +63,7 @@ type
   private
     { private declarations }
     function GetIP: string;
+    function GetIPVersion: string;
     function GetProvider: string;
     function GetHostName: string;
     function GetDateTime: TDateTime;
@@ -84,6 +85,8 @@ type
     { protected declarations }
     [JsonName('ip')]
     FIP: string;
+    [JsonName('ip_version')]
+    FIPVersion: string;
     [JsonName('provider')]
     FProvider: string;
     [JsonName('datetime')]
@@ -212,6 +215,7 @@ constructor TIPGeoLocationResponseCustom.Create(const pJSON: string;
 begin
   FJSON := pJSON;
   FIP := pIP;
+  FIPVersion := IPGeoLocation.Types.GetIPVersion(FIP);
   FProvider := pProvider;
   FDateTime := Now();
 end;
@@ -265,6 +269,11 @@ end;
 function TIPGeoLocationResponseCustom.GetIP: string;
 begin
   Result := FIP;
+end;
+
+function TIPGeoLocationResponseCustom.GetIPVersion: string;
+begin
+  Result := FIPVersion;
 end;
 
 function TIPGeoLocationResponseCustom.GetISP: string;
@@ -396,7 +405,7 @@ begin
       end;
 
       raise EIPGeoLocationRequestException.Create(
-        TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
+        TIPGeoLocationExceptionKind.EXCEPTION_OTHERS,
         FIP,
         FProvider,
         Now(),
@@ -420,14 +429,14 @@ begin
   except
     on E: ENetHTTPClientException do
     begin
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_HTTP,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_HTTP,
                                            FIP,
                                            FProvider,
                                            Now(),
                                            E.Message);
     end;
     on E: Exception do
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_OTHERS,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_OTHERS,
                                            FIP,
                                            FProvider,
                                            Now(),
@@ -439,15 +448,22 @@ begin
 
   //RESPOSTA COM CONTEÚDO?
   if lJSON.IsEmpty then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_NO_CONTENT,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_NO_CONTENT,
                                          FIP,
                                          FProvider,
                                          Now(),
                                          'Without content.');
 
+  if (lJSON.Equals('[]') or lJSON.Equals('{}')) then
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_NO_CONTENT,
+                                         FIP,
+                                         FProvider,
+                                         Now(),
+                                         'JSON is Empty.');
+
   //CÓDIGO DE RETORNO DO SERVIDOR
   if (Result.StatusCode <> 200) then
-    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+    raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                          FIP,
                                          FProvider,
                                          Now(),
@@ -468,7 +484,7 @@ begin
   try
     lJSONValue := TJSONObject.ParseJSONValue(pJSON);
     if not Assigned(lJSONValue) then
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_JSON_INVALID,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_JSON_INVALID,
                                            FIP,
                                            FProvider,
                                            Now(),

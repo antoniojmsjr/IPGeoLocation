@@ -141,7 +141,7 @@ begin
     //CONFORME A DOCUMENTAÇÃO DA API
     if lJSONObject.TryGetValue('response', lResponseAPI) then
     begin
-      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+      raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                            FIP,
                                            FProvider,
                                            Now(),

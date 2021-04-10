@@ -70,6 +70,7 @@ type
   IGeoLocation = interface
     ['{2BA0D4A4-9F3C-4CFF-A485-7EB7FD0638A9}']
     function GetIP: string;
+    function GetIPVersion: string;
     function GetProvider: string;
     function GetDateTime: TDateTime;
     function GetHostName: string;
@@ -90,6 +91,7 @@ type
     function ToJSON: string;
 
     property IP: string read GetIP;
+    property IPVersion: string read GetIPVersion;
     property Provider: string read GetProvider;
     property DateTime: TDateTime read GetDateTime;
     property HostName: string read GetHostName;

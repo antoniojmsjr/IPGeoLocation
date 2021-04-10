@@ -133,11 +133,11 @@ begin
     if (lRequestSuccessAPI = False) then
     begin
       if Assigned(lJSONObject.GetValue('message')) then
-        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.iglEXCEPTION_API,
+        raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                              FIP,
                                              FProvider,
                                              Now(),
-                                             lJSONObject.GetValue('message').ToString);
+                                             lJSONObject.GetValue('message').ToJSON);
     end;
   finally
     lJSONObject.Free;

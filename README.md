@@ -116,6 +116,7 @@ begin
     on E: EIPGeoLocationRequestException do
     begin
       lMsgError := Concat(lMsgError, Format('IP: %s', [E.IP]), sLineBreak);
+      lMsgError := Concat(lMsgError, Format('IPVersion: %s', [E.IPVersion]), sLineBreak);      
       lMsgError := Concat(lMsgError, Format('Provider: %s', [E.Provider]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('DateTime: %s', [DateTimeTostr(E.DateTime)]), sLineBreak);
       lMsgError := Concat(lMsgError, Format('Kind: %s', [E.Kind.AsString]), sLineBreak);

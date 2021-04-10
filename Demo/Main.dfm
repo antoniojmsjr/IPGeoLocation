@@ -211,6 +211,7 @@ object frmMain: TfrmMain
         KeyOptions = [keyEdit, keyUnique]
         Strings.Strings = (
           'ip ='
+          'ip_version ='
           'provider ='
           'datetime ='
           'hostname ='
@@ -220,7 +221,7 @@ object frmMain: TfrmMain
           'country_flag ='
           'state='
           'city ='
-          'District ='
+          'district ='
           'zip_code ='
           'latitude ='
           'longitude='
@@ -229,6 +230,8 @@ object frmMain: TfrmMain
           'isp=')
         TabOrder = 0
         OnClick = vleJSONClick
+        ExplicitLeft = -1
+        ExplicitTop = 1
         ColWidths = (
           89
           209)

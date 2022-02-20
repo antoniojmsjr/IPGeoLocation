@@ -380,11 +380,13 @@ begin
   except
     on E: EIPGeoLocationException do
     begin
-      if Assigned(lIHTTPResponse) then
-      begin
-        lStatusCode := lIHTTPResponse.StatusCode;
-        lStatusText := lIHTTPResponse.StatusText;
-      end;
+      if not (E.Kind in [TIPGeoLocationExceptionKind.EXCEPTION_HTTP,
+                         TIPGeoLocationExceptionKind.EXCEPTION_OTHERS]) then
+        if Assigned(lIHTTPResponse) then
+        begin
+          lStatusCode := lIHTTPResponse.StatusCode;
+          lStatusText := lIHTTPResponse.StatusText;
+        end;
 
       raise EIPGeoLocationRequestException.Create(
         E.Kind,

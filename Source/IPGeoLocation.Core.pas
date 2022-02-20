@@ -149,6 +149,7 @@ type
     FCheckJSONValue: Boolean;
     function InternalExecute: IHTTPResponse; virtual;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; virtual; abstract;
+    function GetMessageExceptionAPI(const pJSON: string): string; virtual; abstract;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); virtual;
@@ -463,11 +464,14 @@ begin
 
   //CÓDIGO DE RETORNO DO SERVIDOR
   if (Result.StatusCode <> 200) then
+  begin
+    lJSON := GetMessageExceptionAPI(lJSON);
     raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                          FIP,
                                          FProvider,
                                          Now(),
                                          lJSON);
+  end;
 
   //VERIFICAÇÃO DO RETORNO DO JSON
   JSONValueIsValid(lJSON);

@@ -40,6 +40,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
@@ -107,6 +108,23 @@ constructor TIPGeoLocationRequestIPGeoLocation.Create(
 begin
   inherited Create(pParent, pIP);
   FResponseLanguageCode := 'en';
+end;
+
+function TIPGeoLocationRequestIPGeoLocation.GetMessageExceptionAPI(
+  const pJSON: string): string;
+var
+  lJSONMessage: TJSONValue;
+begin
+  lJSONMessage := nil;
+  try
+    lJSONMessage := TJSONObject.ParseJSONValue(pJSON);
+    if not Assigned(lJSONMessage) then
+      Exit(pJSON);
+
+    (lJSONMessage as TJSONObject).TryGetValue('message', Result);
+  finally
+    lJSONMessage.Free;
+  end;
 end;
 
 function TIPGeoLocationRequestIPGeoLocation.GetResponse(

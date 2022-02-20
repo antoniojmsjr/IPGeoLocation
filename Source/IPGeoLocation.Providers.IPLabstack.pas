@@ -41,6 +41,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
   end;
@@ -102,6 +103,12 @@ end;
 {$ENDREGION}
 
 {$REGION 'TIPGeoLocationRequestIPLabstack'}
+function TIPGeoLocationRequestIPLabstack.GetMessageExceptionAPI(
+  const pJSON: string): string;
+begin
+  Result := pJSON;
+end;
+
 function TIPGeoLocationRequestIPLabstack.GetResponse(
   pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin

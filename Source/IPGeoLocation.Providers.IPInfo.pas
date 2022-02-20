@@ -40,6 +40,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
   end;
@@ -105,6 +106,38 @@ end;
 {$ENDREGION}
 
 {$REGION 'TIPGeoLocationRequestIPInfo'}
+function TIPGeoLocationRequestIPInfo.GetMessageExceptionAPI(
+  const pJSON: string): string;
+var
+  lMessage: TStringBuilder;
+  lJSONMessage: TJSONValue;
+  lJSONMessageError: TJSONObject;
+  lText: string;
+begin
+  lJSONMessage := nil;
+  lMessage := nil;
+  try
+    lMessage := TStringBuilder.Create;
+    lJSONMessage := TJSONObject.ParseJSONValue(pJSON);
+    if not Assigned(lJSONMessage) then
+      Exit(pJSON);
+
+    (lJSONMessage as TJSONObject).TryGetValue('error', lJSONMessageError);
+    if not Assigned(lJSONMessageError) then
+      Exit(pJSON);
+
+    lJSONMessageError.TryGetValue('title', lText);
+    lMessage.AppendFormat('%s%s', [lText, sLineBreak]);
+    lJSONMessageError.TryGetValue('message', lText);
+    lMessage.AppendFormat('%s', [lText]);
+
+    Result := lMessage.ToString;
+  finally
+    lMessage.Free;
+    lJSONMessage.Free;
+  end;
+end;
+
 function TIPGeoLocationRequestIPInfo.GetResponse(
   pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin

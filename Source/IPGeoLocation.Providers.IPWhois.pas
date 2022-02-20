@@ -40,6 +40,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
@@ -104,6 +105,23 @@ begin
   FResponseLanguageCode := 'pt-BR';
 end;
 
+function TIPGeoLocationRequestIPWhois.GetMessageExceptionAPI(
+  const pJSON: string): string;
+var
+  lJSONMessage: TJSONValue;
+begin
+  lJSONMessage := nil;
+  try
+    lJSONMessage := TJSONObject.ParseJSONValue(pJSON);
+    if not Assigned(lJSONMessage) then
+      Exit(pJSON);
+
+    (lJSONMessage as TJSONObject).TryGetValue('message', Result);
+  finally
+    lJSONMessage.Free;
+  end;
+end;
+
 function TIPGeoLocationRequestIPWhois.GetResponse(
   pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin
@@ -115,6 +133,7 @@ var
   lURL: TURI;
   lJSONObject: TJSONObject;
   lRequestSuccessAPI: Boolean;
+  lMessageError: string;
 begin
   //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s/%s/%s', [FIPGeoLocationProvider.URL, 'json', FIP]));
@@ -133,11 +152,14 @@ begin
     if (lRequestSuccessAPI = False) then
     begin
       if Assigned(lJSONObject.GetValue('message')) then
+      begin
+        lMessageError := GetMessageExceptionAPI(Result.ContentAsString);
         raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                              FIP,
                                              FProvider,
                                              Now(),
-                                             lJSONObject.GetValue('message').ToJSON);
+                                             lMessageError);
+      end;
     end;
   finally
     lJSONObject.Free;

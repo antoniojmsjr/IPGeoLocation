@@ -40,6 +40,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
@@ -104,6 +105,35 @@ begin
   FResponseLanguageCode := 'en'; //English/US
 end;
 
+function TIPGeoLocationRequestIPStack.GetMessageExceptionAPI(
+  const pJSON: string): string;
+var
+  lMessage: TStringBuilder;
+  lJSONMessage: TJSONValue;
+  lText: string;
+begin
+  lJSONMessage := nil;
+  lMessage := nil;
+  try
+    lMessage := TStringBuilder.Create;
+    lJSONMessage := TJSONObject.ParseJSONValue(pJSON);
+    if not Assigned(lJSONMessage) then
+      Exit(pJSON);
+
+    (lJSONMessage as TJSONObject).TryGetValue('code', lText);
+    lMessage.AppendFormat('Code: %s%s', [lText, sLineBreak]);
+    (lJSONMessage as TJSONObject).TryGetValue('type', lText);
+    lMessage.AppendFormat('Type: %s%s', [lText, sLineBreak]);
+    (lJSONMessage as TJSONObject).TryGetValue('info', lText);
+    lMessage.AppendFormat('Info: %s%s', [lText, sLineBreak]);
+
+    Result := lMessage.ToString;
+  finally
+    lMessage.Free;
+    lJSONMessage.Free;
+  end;
+end;
+
 function TIPGeoLocationRequestIPStack.GetResponse(
   pIHTTPResponse: IHTTPResponse): IGeoLocation;
 begin
@@ -115,6 +145,7 @@ var
   lURL: TURI;
   lJSONObject: TJSONObject;
   lRequestSuccessAPI: Boolean;
+  lMessageError: string;
 begin
   //CONFORME A DOCUMENTAÇÃO DA API
   lURL := TURI.Create(Format('%s/%s', [FIPGeoLocationProvider.URL, FIP]));
@@ -139,11 +170,14 @@ begin
     if (lRequestSuccessAPI = False) then
     begin
       if Assigned(lJSONObject.GetValue('error')) then
+      begin
+        lMessageError := GetMessageExceptionAPI(lJSONObject.GetValue('error').ToJSON);
         raise EIPGeoLocationException.Create(TIPGeoLocationExceptionKind.EXCEPTION_API,
                                              FIP,
                                              FProvider,
                                              Now(),
-                                             lJSONObject.GetValue('error').ToJSON);
+                                             lMessageError);
+      end;
     end;
   finally
     lJSONObject.Free;

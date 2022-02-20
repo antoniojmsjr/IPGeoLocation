@@ -40,6 +40,7 @@ type
     { protected declarations }
     function InternalExecute: IHTTPResponse; override;
     function GetResponse(pIHTTPResponse: IHTTPResponse): IGeoLocation; override;
+    function GetMessageExceptionAPI(const pJSON: string): string; override;
   public
     { public declarations }
     constructor Create(pParent: IIPGeoLocationProvider; const pIP: string); override;
@@ -103,6 +104,12 @@ constructor TIPGeoLocationRequestDB_IP.Create(pParent: IIPGeoLocationProvider;
 begin
   inherited Create(pParent, pIP);
   FResponseLanguageCode := 'en-US';
+end;
+
+function TIPGeoLocationRequestDB_IP.GetMessageExceptionAPI(
+  const pJSON: string): string;
+begin
+  Result := pJSON;
 end;
 
 function TIPGeoLocationRequestDB_IP.GetResponse(

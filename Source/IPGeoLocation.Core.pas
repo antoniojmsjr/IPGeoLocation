@@ -343,6 +343,10 @@ begin
   FCheckJSONValue := True;
 
   FHttpClient := TNetHTTPClient.Create(nil);
+  FHttpClient.SecureProtocols := [];
+  FHttpClient.SecureProtocols := [THTTPSecureProtocol.TLS1,
+                                  THTTPSecureProtocol.TLS11,
+                                  THTTPSecureProtocol.TLS12];
   FHttpRequest := TNetHTTPRequest.Create(nil);
   FHttpRequest.Client := FHttpClient;
 end;

@@ -1,9 +1,11 @@
 ![Maintained YES](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat-square&color=important)
 ![Memory Leak Verified YES](https://img.shields.io/badge/Memory%20Leak%20Verified%3F-yes-green.svg?style=flat-square&color=important)
-![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20above-blue.svg?style=flat-square)
-![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap,%20Horse,%20RDW,%20RADServer-blue.svg?style=flat-square)
-![Stars](https://img.shields.io/github/stars/antoniojmsjr/IPGeoLocation.svg?style=flat-square) ![Forks](https://img.shields.io/github/forks/antoniojmsjr/IPGeoLocation.svg?style=flat-square) ![Issues](https://img.shields.io/github/issues/antoniojmsjr/IPGeoLocation.svg?style=flat-square&color=blue)
-![Release](https://img.shields.io/github/v/release/antoniojmsjr/ipgeolocation?label=Latest%20release&style=flat-square&color=important)
+![Release](https://img.shields.io/github/v/release/antoniojmsjr/IPGeoLocation?label=Latest%20release&style=flat-square&color=important)
+![Stars](https://img.shields.io/github/stars/antoniojmsjr/IPGeoLocation.svg?style=flat-square)
+![Forks](https://img.shields.io/github/forks/antoniojmsjr/IPGeoLocation.svg?style=flat-square)
+![Issues](https://img.shields.io/github/issues/antoniojmsjr/IPGeoLocation.svg?style=flat-square&color=blue)</br>
+![Compatibility](https://img.shields.io/badge/Compatibility-VCL,%20Firemonkey,%20DataSnap,%20Horse,%20RDW,%20RADServer-3db36a?style=flat-square)
+![Delphi Supported Versions](https://img.shields.io/badge/Delphi%20Supported%20Versions-Tokyo%2010.2.3%20and%20above-3db36a?style=flat-square)
 <p align="center">
   <a href="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">
     <img alt="IPGeolocation" height="150" src="https://github.com/antoniojmsjr/IPGeoLocation/blob/master/Image/logo.png">

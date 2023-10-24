@@ -47,7 +47,8 @@ implementation
 uses
   System.SysUtils,
   IPGeoLocation.Providers.IPInfo, IPGeoLocation.Providers.IPGeoLocation,
-  IPGeoLocation.Providers.IP2Location, IPGeoLocation.Providers.IPAPI,
+  IPGeoLocation.Providers.IP2Location, IPGeoLocation.Providers.IP2LocationIO,
+  IPGeoLocation.Providers.IPAPI,
   IPGeoLocation.Providers.IPStack, IPGeoLocation.Providers.IPIfy,
   IPGeoLocation.Providers.IPGeolocationAPI, IPGeoLocation.Providers.IPData,
   IPGeoLocation.Providers.IPWhois, IPGeoLocation.Providers.IPDig,
@@ -64,6 +65,7 @@ begin
     TIPGeoLocationProviderKind.IPInfo:            Result := TIPGeoLocationProviderIPInfo.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPGeoLocation:     Result := TIPGeoLocationProviderIPGeoLocation.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IP2Location:       Result := TIPGeoLocationProviderIP2Location.Create(pIPGeoLocation, pIP);
+    TIPGeoLocationProviderKind.IP2LocationIO:       Result := TIPGeoLocationProviderIP2LocationIO.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPAPI:             Result := TIPGeoLocationProviderIPAPI.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPStack:           Result := TIPGeoLocationProviderIPStack.Create(pIPGeoLocation, pIP);
     TIPGeoLocationProviderKind.IPIfy:             Result := TIPGeoLocationProviderIPIfy.Create(pIPGeoLocation, pIP);

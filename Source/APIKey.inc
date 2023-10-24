@@ -5,6 +5,7 @@ const
   APIKey_IPInfo='';
   APIKey_IPGeoLocation='';
   APIKey_IP2Location='';
+  APIKey_IP2LocationIO='';
   APIKey_IPAPI='';
   APIKey_IPStack='';
   APIKey_IPIfy='';

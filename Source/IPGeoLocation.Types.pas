@@ -38,6 +38,7 @@ type
                                 IPInfo,
                                 IPGeoLocation,
                                 IP2Location,
+                                IP2LocationIO,
                                 IPApi,
                                 IPStack,
                                 IPIfy,
@@ -229,6 +230,7 @@ begin
     TIPGeoLocationProviderKind.IPInfo:           Result := 'IPInfo';
     TIPGeoLocationProviderKind.IPGeoLocation:    Result := 'IPGeoLocation';
     TIPGeoLocationProviderKind.IP2Location:      Result := 'IP2Location';
+    TIPGeoLocationProviderKind.IP2LocationIO:      Result := 'IP2LocationIO';
     TIPGeoLocationProviderKind.IPApi:            Result := 'IPApi';
     TIPGeoLocationProviderKind.IPStack:          Result := 'IPStack';
     TIPGeoLocationProviderKind.IPIfy:            Result := 'IPIfy';

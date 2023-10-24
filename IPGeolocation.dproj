@@ -193,6 +193,7 @@
         <DCCReference Include="Source\IPGeoLocation.Providers.IPInfo.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.IPGeoLocation.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.IP2Location.pas"/>
+        <DCCReference Include="Source\IPGeoLocation.Providers.IP2LocationIO.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.IPAPI.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.IPStack.pas"/>
         <DCCReference Include="Source\IPGeoLocation.Providers.IPIfy.pas"/>

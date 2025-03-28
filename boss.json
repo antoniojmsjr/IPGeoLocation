@@ -1,7 +1,7 @@
 {
 	"name": "IPGeoLocation",
 	"description": "Biblioteca de geolocalização por IP em Delphi.",
-	"version": "1.5.3",
+	"version": "1.7.0",
 	"homepage": "https://github.com/antoniojmsjr/IPGeoLocation",
 	"mainsrc": "Source",
 	"projects": [],

@@ -103,6 +103,7 @@ object frmMain: TfrmMain
         'IP Info'
         'IP Geolocation'
         'IP2Location'
+        'IP2Location.IO'
         'IP API'
         'IP Stack'
         'IP Ify'
@@ -230,8 +231,6 @@ object frmMain: TfrmMain
           'isp=')
         TabOrder = 0
         OnClick = vleJSONClick
-        ExplicitLeft = -1
-        ExplicitTop = 1
         ColWidths = (
           89
           209)

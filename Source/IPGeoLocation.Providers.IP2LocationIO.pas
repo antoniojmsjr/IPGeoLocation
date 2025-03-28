@@ -106,7 +106,7 @@ constructor TIPGeoLocationRequestIP2LocationIO.Create(
   pParent: IIPGeoLocationProvider; const pIP: string);
 begin
   inherited Create(pParent, pIP);
-  FResponseLanguageCode := 'en';
+  FResponseLanguageCode := EmptyStr;
 end;
 
 function TIPGeoLocationRequestIP2LocationIO.GetMessageExceptionAPI(
@@ -139,10 +139,11 @@ var
   lResponseAPI: string;
 begin
   //CONFORME A DOCUMENTAÇÃO DA API
-  lURL := TURI.Create(Format('%s/', [FIPGeoLocationProvider.URL]));
+  lURL := TURI.Create(Format('%s', [FIPGeoLocationProvider.URL]));
   lURL.AddParameter('key', FIPGeoLocationProvider.APIKey);
   lURL.AddParameter('ip', FIP);
-  lURL.AddParameter('lang', FResponseLanguageCode);
+  if (Trim(FResponseLanguageCode) <> EmptyStr) then
+    lURL.AddParameter('lang', FResponseLanguageCode);
   lURL.AddParameter('format', 'json');
 
   FHttpRequest.URL := lURL.ToString;

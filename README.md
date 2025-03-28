@@ -61,8 +61,8 @@ Essa tecnologia é amplamente usada em:
 
 | Provedor | Site | API | Free Requests |
 |---|---|---|---|
-| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 | 10.000 yearthly |
-| IP2Location.io | https://www.ip2location.io | https://api.ip2location.io | 30.000 monthly |
+| IP2Location | https://www.ip2location.com | https://api.ip2location.com/v2 | 30.000 yearthly |
+| IP2Location.io | https://www.ip2location.io | https://api.ip2location.io | 50.000 monthly |
 | IPGeolocation | https://ipgeolocation.io | https://api.ipgeolocation.io/ipgeo | 1.500 daily |
 | IPStack  | https://ipstack.com | http://api.ipstack.com | 10.000 monthly |
 | IPIfy | https://geo.ipify.org | https://geo.ipify.org/api/v1 | 1.000 monthly |

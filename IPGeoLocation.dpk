@@ -44,6 +44,7 @@ contains
   IPGeoLocation.Providers.IPInfo in 'Source\IPGeoLocation.Providers.IPInfo.pas',
   IPGeoLocation.Providers.IPGeoLocation in 'Source\IPGeoLocation.Providers.IPGeoLocation.pas',
   IPGeoLocation.Providers.IP2Location in 'Source\IPGeoLocation.Providers.IP2Location.pas',
+  IPGeoLocation.Providers.IP2LocationIO in 'Source\IPGeoLocation.Providers.IP2LocationIO.pas',
   IPGeoLocation.Providers.IPAPI in 'Source\IPGeoLocation.Providers.IPAPI.pas',
   IPGeoLocation.Providers.IPStack in 'Source\IPGeoLocation.Providers.IPStack.pas',
   IPGeoLocation.Providers.IPIfy in 'Source\IPGeoLocation.Providers.IPIfy.pas',
